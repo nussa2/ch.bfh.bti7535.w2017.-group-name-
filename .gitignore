@@ -2,6 +2,7 @@
 ### NetBeans template
 nbproject/private/
 build/
+target/
 nbbuild/
 dist/
 nbdist/
