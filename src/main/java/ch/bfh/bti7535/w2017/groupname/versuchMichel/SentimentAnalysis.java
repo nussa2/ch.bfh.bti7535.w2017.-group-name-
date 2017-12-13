@@ -1,5 +1,7 @@
 package ch.bfh.bti7535.w2017.groupname.versuchMichel;
 
+import ch.bfh.bti7535.w2017.groupname.datainput.ARFFInputProvider;
+import ch.bfh.bti7535.w2017.groupname.datainput.DataInputProvider;
 import weka.classifiers.bayes.NaiveBayes;
 import weka.classifiers.trees.J48;
 import weka.core.*;
@@ -25,7 +27,8 @@ public class SentimentAnalysis {
         configureStringToWordVector(stringToWordVector);
         analysis.addFilter(stringToWordVector);
 
-        Instances instances = analysis.readRawData();
+        DataInputProvider dataInputProvider = new ARFFInputProvider();
+        Instances instances = dataInputProvider.loadData();
         Instances filteredInstances = analysis.applyFilters(instances);
 
         J48 classifier = new J48();
@@ -45,12 +48,12 @@ public class SentimentAnalysis {
         stringToWordVector.setOutputWordCounts(false);
         stringToWordVector.setPeriodicPruning(-1.0);
         stringToWordVector.setStemmer(new NullStemmer());
-        stringToWordVector.setWordsToKeep(1000);
+        stringToWordVector.setWordsToKeep(2000);
     }
 
     private Instance createInstance(String review, Instances currentInstances) {
         Instance instance = new DenseInstance(2);
-        Attribute attribute = currentInstances.attribute("text");
+        Attribute attribute = currentInstances.attribute("text_review");
         instance.setValue(attribute, attribute.addStringValue(review));
         instance.setDataset(currentInstances);
         return instance;
