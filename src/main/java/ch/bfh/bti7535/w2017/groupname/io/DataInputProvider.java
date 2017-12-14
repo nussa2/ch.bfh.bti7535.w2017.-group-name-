@@ -4,7 +4,8 @@ import weka.core.Instances;
 
 public interface DataInputProvider {
 
-    void init();
+    DataInputProvider setSource(String source);
+    DataInputProvider init();
     Instances loadData();
 
 }

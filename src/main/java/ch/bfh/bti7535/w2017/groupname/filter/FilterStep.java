@@ -1,9 +1,7 @@
 package ch.bfh.bti7535.w2017.groupname.filter;
 
-import weka.core.Instances;
+import ch.bfh.bti7535.w2017.groupname.process.ProcessStep;
 
-public interface FilterStep {
+public interface FilterStep extends ProcessStep {
 
-    void init();
-    Instances process(Instances dataset);
 }

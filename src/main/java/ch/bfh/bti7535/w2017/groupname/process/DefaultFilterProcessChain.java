@@ -25,6 +25,11 @@ public class DefaultFilterProcessChain implements ProcessChain {
         applyFilters(0, (filters.size()-1));
     }
 
+    @Override
+    public void addStep(ProcessStep processStep) {
+        addFilter((FilterStep) processStep);
+    }
+
     public void addDataSet(Instances instances){
         dataSets.add(instances);
     }
@@ -42,7 +47,7 @@ public class DefaultFilterProcessChain implements ProcessChain {
         int dataSetCount = 0;
 
         while (stepCount <= stopStep){
-            System.out.println("execute filter "+stepCount+" of "+(stopStep-startStep+1));
+            System.out.println("execute filter "+(stepCount+1)+" of "+(stopStep-startStep+1));
             filters.get(stepCount).init();
             dataSets.add(filters.get(stepCount).process(dataSets.get(dataSetCount)));
 

@@ -8,9 +8,17 @@ import java.io.InputStream;
 
 public class ArffResourceInputProvider implements DataInputProvider {
 
+    private String source_path;
 
     @Override
-    public void init() {
+    public DataInputProvider setSource(String source) {
+        source_path = source;
+        return this;
+    }
+
+    @Override
+    public DataInputProvider init() {
+        return this;
     }
 
     @Override
@@ -18,7 +26,7 @@ public class ArffResourceInputProvider implements DataInputProvider {
         ArffLoader loader = new ArffLoader();
         Instances data = null;
 
-        try (InputStream inputStream = ArffResourceInputProvider.class.getResourceAsStream("/movie_reviews_raw.arff")){
+        try (InputStream inputStream = ArffResourceInputProvider.class.getResourceAsStream(source_path)){
 
             loader.setSource(inputStream);
             //data = loader.getStructure();

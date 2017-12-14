@@ -1,12 +1,16 @@
 package ch.bfh.bti7535.w2017.groupname;
 
+import ch.bfh.bti7535.w2017.groupname.classify.NBClassifier;
 import ch.bfh.bti7535.w2017.groupname.filter.AttributeSelectionFilter;
+import ch.bfh.bti7535.w2017.groupname.filter.CrossValidationFilter;
 import ch.bfh.bti7535.w2017.groupname.io.ArffResourceInputProvider;
 import ch.bfh.bti7535.w2017.groupname.filter.PreprocessingFilter;
 import ch.bfh.bti7535.w2017.groupname.io.ArffTempFileOutputProvider;
 import ch.bfh.bti7535.w2017.groupname.io.DataOutputProvider;
 import ch.bfh.bti7535.w2017.groupname.io.InstancesLogger;
+import ch.bfh.bti7535.w2017.groupname.process.CVClassificationProcessChain;
 import ch.bfh.bti7535.w2017.groupname.process.DefaultFilterProcessChain;
+import ch.bfh.bti7535.w2017.groupname.process.ProcessChain;
 import weka.classifiers.bayes.NaiveBayes;
 import weka.core.Instances;
 
@@ -18,32 +22,46 @@ public class App {
 
     public static void main(String[] args) {
 
-        DefaultFilterProcessChain processChain = new DefaultFilterProcessChain();
+        DefaultFilterProcessChain filterChain = new DefaultFilterProcessChain();
+        filterChain.init();
 
-        Instances instances = new ArffResourceInputProvider().loadData();
+        //Instances instances = new ArffResourceInputProvider().init().setSource("/movie_reviews_raw.arff").loadData();
+        Instances instances = new ArffResourceInputProvider().init().setSource("/movie_sa_selected_attributes_top_90.arff").loadData();
 
         DataOutputProvider logger = new InstancesLogger();
 
         logger.saveData(instances);
 
-        processChain.addDataSet(instances);
-        processChain.addFilter(new PreprocessingFilter());
-        processChain.addFilter(new AttributeSelectionFilter());
+        filterChain.addDataSet(instances);
+        //filterChain.addStep(new PreprocessingFilter());
+        //filterChain.addStep(new AttributeSelectionFilter());
+        filterChain.addStep(new CrossValidationFilter());
+
 
 
         try {
-            processChain.process();
+            filterChain.process();
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        Instances ppInstances = processChain.getResultSet();
+        Instances ppInstances = filterChain.getResultSet();
+        logger.saveData(ppInstances);
 
-        DataOutputProvider tempFileSaver = new ArffTempFileOutputProvider();
+        ProcessChain classificationChain = new CVClassificationProcessChain();
+        classificationChain.init();
+        classificationChain.addDataSet(ppInstances);
+        classificationChain.addStep(new NBClassifier());
 
-        tempFileSaver.saveData(ppInstances);
+        try {
+            classificationChain.process();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-        NaiveBayes naiveBayes = new NaiveBayes();
+        //DataOutputProvider tempFileSaver = new ArffTempFileOutputProvider();
+
+        //tempFileSaver.saveData(ppInstances);
     }
 
 }
