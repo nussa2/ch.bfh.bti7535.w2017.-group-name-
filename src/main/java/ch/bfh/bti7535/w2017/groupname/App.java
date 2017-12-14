@@ -1,48 +1,49 @@
 package ch.bfh.bti7535.w2017.groupname;
 
-import ch.bfh.bti7535.w2017.groupname.datainput.ARFFInputProvider;
+import ch.bfh.bti7535.w2017.groupname.filter.AttributeSelectionFilter;
+import ch.bfh.bti7535.w2017.groupname.io.ArffResourceInputProvider;
 import ch.bfh.bti7535.w2017.groupname.filter.PreprocessingFilter;
+import ch.bfh.bti7535.w2017.groupname.io.ArffTempFileOutputProvider;
+import ch.bfh.bti7535.w2017.groupname.io.DataOutputProvider;
+import ch.bfh.bti7535.w2017.groupname.io.InstancesLogger;
+import ch.bfh.bti7535.w2017.groupname.process.DefaultFilterProcessChain;
 import weka.classifiers.bayes.NaiveBayes;
 import weka.core.Instances;
-
-import java.util.Enumeration;
-import java.util.Iterator;
 
 /**
  * Hello world!
  */
 public class App {
+
+
     public static void main(String[] args) {
 
+        DefaultFilterProcessChain processChain = new DefaultFilterProcessChain();
 
-        Instances instances = new ARFFInputProvider().loadData();
-        //instances.setClassIndex(1);
+        Instances instances = new ArffResourceInputProvider().loadData();
 
-        PreprocessingFilter ppFilter = new PreprocessingFilter();
-        ppFilter.init();
-        Instances ppInstances = ppFilter.preprocess(instances);
+        DataOutputProvider logger = new InstancesLogger();
+
+        logger.saveData(instances);
+
+        processChain.addDataSet(instances);
+        processChain.addFilter(new PreprocessingFilter());
+        processChain.addFilter(new AttributeSelectionFilter());
 
 
-        System.out.println("summary: "+ppInstances.toSummaryString());
-
-        Enumeration attributes = ppInstances.enumerateAttributes();
-        while (attributes.hasMoreElements()){
-            System.out.println(attributes.nextElement());
+        try {
+            processChain.process();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-        System.out.println("class attribute: "+ppInstances.classAttribute());
-        System.out.println("# attributes " + ppInstances.numAttributes());
-        System.out.println("# instances " + ppInstances.numInstances());
-        System.out.println("# classes " + ppInstances.numClasses());
+        Instances ppInstances = processChain.getResultSet();
 
-        System.out.println(instances.get(250));
-        System.out.println(ppInstances.get(250));
-        System.out.println(ppInstances.get(250).classValue());
+        DataOutputProvider tempFileSaver = new ArffTempFileOutputProvider();
 
-        System.out.println(instances.get(1012));
-        System.out.println(ppInstances.get(1012));
-        System.out.println(ppInstances.get(1012).classValue());
+        tempFileSaver.saveData(ppInstances);
 
         NaiveBayes naiveBayes = new NaiveBayes();
     }
+
 }

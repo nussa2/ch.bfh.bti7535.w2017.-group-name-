@@ -1,21 +1,17 @@
 package ch.bfh.bti7535.w2017.groupname.versuchMichel;
 
-import ch.bfh.bti7535.w2017.groupname.datainput.ARFFInputProvider;
-import ch.bfh.bti7535.w2017.groupname.datainput.DataInputProvider;
-import weka.classifiers.bayes.NaiveBayes;
+import ch.bfh.bti7535.w2017.groupname.io.ArffResourceInputProvider;
+import ch.bfh.bti7535.w2017.groupname.io.DataInputProvider;
 import weka.classifiers.trees.J48;
 import weka.core.*;
 import weka.core.converters.TextDirectoryLoader;
 import weka.core.stemmers.NullStemmer;
 import weka.filters.Filter;
-import weka.filters.unsupervised.attribute.FirstOrder;
 import weka.filters.unsupervised.attribute.StringToWordVector;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 public class SentimentAnalysis {
@@ -27,7 +23,7 @@ public class SentimentAnalysis {
         configureStringToWordVector(stringToWordVector);
         analysis.addFilter(stringToWordVector);
 
-        DataInputProvider dataInputProvider = new ARFFInputProvider();
+        DataInputProvider dataInputProvider = new ArffResourceInputProvider();
         Instances instances = dataInputProvider.loadData();
         Instances filteredInstances = analysis.applyFilters(instances);
 
