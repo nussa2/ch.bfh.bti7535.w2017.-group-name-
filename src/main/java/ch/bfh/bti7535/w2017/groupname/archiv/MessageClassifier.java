@@ -1,13 +1,8 @@
-package ch.bfh.bti7535.w2017.groupname;
+package ch.bfh.bti7535.w2017.groupname.archiv;
 
 import weka.classifiers.Classifier;
 import weka.classifiers.trees.J48;
-import weka.core.Attribute;
-import weka.core.DenseInstance;
-import weka.core.Instance;
-import weka.core.Instances;
-import weka.core.SerializationHelper;
-import weka.core.Utils;
+import weka.core.*;
 import weka.filters.Filter;
 import weka.filters.unsupervised.attribute.StringToWordVector;
 

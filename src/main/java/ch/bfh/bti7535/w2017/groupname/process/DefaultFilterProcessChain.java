@@ -38,7 +38,7 @@ public class DefaultFilterProcessChain implements ProcessChain {
         return dataSets.get(dataSets.size()-1);
     }
 
-    private void applyFilters( int startStep, int stopStep) throws Exception {
+    private void applyFilters( int startStep, int stopStep) {
 
         System.out.println("started process chain.");
         //System.out.println("instances = " + instances);

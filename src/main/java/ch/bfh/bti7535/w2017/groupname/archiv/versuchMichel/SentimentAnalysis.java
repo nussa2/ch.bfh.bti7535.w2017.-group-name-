@@ -1,4 +1,4 @@
-package ch.bfh.bti7535.w2017.groupname.versuchMichel;
+package ch.bfh.bti7535.w2017.groupname.archiv.versuchMichel;
 
 import ch.bfh.bti7535.w2017.groupname.io.ArffResourceInputProvider;
 import ch.bfh.bti7535.w2017.groupname.io.DataInputProvider;

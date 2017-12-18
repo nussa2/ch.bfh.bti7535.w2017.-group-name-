@@ -29,21 +29,11 @@ public class ArffResourceInputProvider implements DataInputProvider {
         try (InputStream inputStream = ArffResourceInputProvider.class.getResourceAsStream(source_path)){
 
             loader.setSource(inputStream);
-            //data = loader.getStructure();
             data = loader.getDataSet();
-
-            //data.setClassIndex(data.numAttributes() - 1);
 
             if (data.classIndex() == -1){
                 data.setClassIndex(data.numAttributes() - 1);
             }
-
-            //Instance instance;
-            /*while ((instance = loader.getNextInstance(data)) != null){
-                //System.out.println("loaded instance: "+instance);
-                data.add(instance);
-            }*/
-            //for (int i = 0; i)
 
         } catch (IOException e) {
             e.printStackTrace();
