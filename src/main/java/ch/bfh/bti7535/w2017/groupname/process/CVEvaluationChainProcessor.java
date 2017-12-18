@@ -10,13 +10,15 @@ public class CVEvaluationChainProcessor implements ChainProcessor {
 
     private int stepCount = 0;
 
+    private double validationResultErrorRate;
+
     @Override
     public void process(ProcessChainConfiguration chain) throws Exception {
         chain.init();
         applyFilters(0, (chain.getSteps().size()-1),chain);
     }
 
-    private void applyFilters( int startStep, int stopStep, ProcessChainConfiguration chain) throws Exception {
+    private void applyFilters(int startStep, int stopStep, ProcessChainConfiguration chain) throws Exception {
 
         System.out.println("started process chain.");
 
@@ -34,7 +36,8 @@ public class CVEvaluationChainProcessor implements ChainProcessor {
             }
 
             if (step instanceof ClassifierStep){
-                processEvaluated(step, dataSet);
+                double result = processEvaluated(step, dataSet);
+                validationResultErrorRate = result;
                 return;
             } else {
                 step.setInitDataSet(dataSet);
@@ -43,10 +46,9 @@ public class CVEvaluationChainProcessor implements ChainProcessor {
 
             stepCount++;
         }
-
     }
 
-    private void processEvaluated(ProcessStep step, Instances dataSet) throws Exception {
+    private double processEvaluated(ProcessStep step, Instances dataSet) throws Exception {
         System.out.println("classify with "+folds+" folds");
         double error = 0;
         for (int n = 0; n < folds; n++) {
@@ -64,6 +66,7 @@ public class CVEvaluationChainProcessor implements ChainProcessor {
         }
         double meanError = error/((double)folds);
         System.out.println("evaluation done, mean success rate: "+(1-meanError));
+        return meanError;
     }
 
     private double evaluate(ClassifierStep classifierStep, Instances referenceSet, Instances testSet) throws Exception {
@@ -75,5 +78,9 @@ public class CVEvaluationChainProcessor implements ChainProcessor {
         System.out.println("Error rate is: "+evaluation.errorRate());
         System.out.println("Evaluation summary: "+evaluation.toSummaryString());
         return evaluation.errorRate();
+    }
+
+    public double getValidationResultErrorRate() {
+        return validationResultErrorRate;
     }
 }
