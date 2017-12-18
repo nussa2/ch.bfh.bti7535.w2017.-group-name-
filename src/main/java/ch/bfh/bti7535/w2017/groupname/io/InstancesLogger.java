@@ -1,12 +1,15 @@
 package ch.bfh.bti7535.w2017.groupname.io;
 
+import ch.bfh.bti7535.w2017.groupname.process.ProcessStep;
 import weka.core.Instances;
 
 import java.util.Enumeration;
 
-public class InstancesLogger implements DataOutputProvider {
-    
-    public static void logInstanceInfo(Instances instances){
+public class InstancesLogger implements DataProvider, ProcessStep {
+
+    private Instances dataSet;
+
+    private static void logInstanceInfo(Instances instances){
         System.out.println("summary: "+instances.toSummaryString());
 
         System.out.println("class attribute: "+instances.classAttribute());
@@ -34,7 +37,22 @@ public class InstancesLogger implements DataOutputProvider {
     }
 
     @Override
-    public void saveData(Instances dataset) {
-        InstancesLogger.logInstanceInfo(dataset);
+    public void process() throws Exception {
+        InstancesLogger.logInstanceInfo(dataSet);
+    }
+
+    @Override
+    public void setInitDataSet(Instances dataSet) {
+        this.dataSet = dataSet;
+    }
+
+    @Override
+    public Instances getResultDataSet() {
+        return dataSet;
+    }
+
+    @Override
+    public DataProvider setSource(String source) {
+        return this;
     }
 }

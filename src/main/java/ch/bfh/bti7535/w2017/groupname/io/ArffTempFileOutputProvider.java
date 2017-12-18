@@ -1,5 +1,6 @@
 package ch.bfh.bti7535.w2017.groupname.io;
 
+import ch.bfh.bti7535.w2017.groupname.process.ProcessStep;
 import weka.core.Instances;
 import weka.core.converters.ArffSaver;
 
@@ -7,12 +8,12 @@ import java.io.File;
 import java.io.IOException;
 import java.time.Instant;
 
-public class ArffTempFileOutputProvider implements DataOutputProvider{
+public class ArffTempFileOutputProvider implements DataProvider, ProcessStep{
 
-    public static final String TEMP_DIR = "/temp/movie-sa/";
     public static final String ARFF_FILE_ENDING = ".arff";
     ArffSaver saver = new ArffSaver();
-    String userHome = System.getProperty("user.home");
+    private Instances dataSet;
+    String destPath;
 
 
     @Override
@@ -21,9 +22,27 @@ public class ArffTempFileOutputProvider implements DataOutputProvider{
     }
 
     @Override
-    public void saveData(Instances dataset) {
+    public void process() {
+        saveData(dataSet);
+    }
+
+    @Override
+    public void setInitDataSet(Instances dataSet) {
+        this.dataSet = dataSet;
+    }
+
+    @Override
+    public Instances getResultDataSet() {
+        return dataSet;
+    }
+
+    private String composePath(){
         String filename = "movie_sa_temp_"+ Instant.now().toEpochMilli();
-        File outputFile = new File(userHome+ TEMP_DIR +filename+ ARFF_FILE_ENDING);
+        return System.getProperty("user.home") + destPath +filename+ ARFF_FILE_ENDING;
+    }
+
+    private void saveData(Instances dataset) {
+        File outputFile = new File(composePath());
         try {
             saver.setInstances(dataset);
             saver.setFile(outputFile);
@@ -31,5 +50,11 @@ public class ArffTempFileOutputProvider implements DataOutputProvider{
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public DataProvider setSource(String source) {
+        this.destPath = source;
+        return this;
     }
 }

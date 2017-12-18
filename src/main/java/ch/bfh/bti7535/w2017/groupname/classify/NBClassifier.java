@@ -1,12 +1,15 @@
 package ch.bfh.bti7535.w2017.groupname.classify;
 
+import ch.bfh.bti7535.w2017.groupname.process.ProcessStep;
+import weka.classifiers.Classifier;
 import weka.classifiers.Evaluation;
 import weka.classifiers.bayes.NaiveBayes;
 import weka.core.Instances;
 
-public class NBClassifier implements ClassifyStep {
+public class NBClassifier implements ClassifierStep {
 
     NaiveBayes naiveBayes = new NaiveBayes();
+    Instances trainset;
 
 
     @Override
@@ -15,23 +18,27 @@ public class NBClassifier implements ClassifyStep {
     }
 
     @Override
-    public Instances process(Instances dataset) {
-        return null;
+    public void process() throws Exception {
+        train();
     }
 
     @Override
-    public void train(Instances instances) throws Exception {
-        naiveBayes.buildClassifier(instances);
+    public void setInitDataSet(Instances dataSet) {
+        trainset = dataSet;
     }
 
     @Override
-    public double evaluate(Instances referenceSet, Instances testSet) throws Exception {
-        Evaluation evaluation = new Evaluation(referenceSet);
-        evaluation.evaluateModel(naiveBayes, testSet);
-        System.out.println("Evaluation done");
-        System.out.println("Error rate is: "+evaluation.errorRate());
-        System.out.println("Evaluation summary: "+evaluation.toSummaryString());
-        return evaluation.errorRate();
+    public Instances getResultDataSet() {
+        return trainset;
     }
 
+    @Override
+    public Classifier getClassifier() {
+        return naiveBayes;
+    }
+
+    @Override
+    public void train() throws Exception {
+        naiveBayes.buildClassifier(trainset);
+    }
 }

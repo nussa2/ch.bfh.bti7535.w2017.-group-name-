@@ -1,34 +1,31 @@
 package ch.bfh.bti7535.w2017.groupname.filter;
 
+import ch.bfh.bti7535.w2017.groupname.process.ProcessStep;
 import weka.core.Instances;
-import weka.core.SelectedTag;
 import weka.core.stemmers.NullStemmer;
 import weka.core.stemmers.Stemmer;
-import weka.core.tokenizers.Tokenizer;
 import weka.core.tokenizers.WordTokenizer;
 import weka.filters.Filter;
 import weka.filters.unsupervised.attribute.StringToWordVector;
 
-import java.lang.reflect.Array;
-
-public class PreprocessingFilter implements FilterStep {
+public class PreprocessingFilter implements ProcessStep {
 
     private StringToWordVector stringToWordVector = new StringToWordVector();
     private WordTokenizer wordTokenizer = new WordTokenizer();
     private Stemmer stemmer = new NullStemmer();
 
+    Instances dataset, resultset;
 
     @Override
-    public Instances process(Instances instances) {
+    public void process() {
         System.out.println("started preprocessing..");
         try {
-            stringToWordVector.setInputFormat(instances);
+            stringToWordVector.setInputFormat(dataset);
             //stringToWordVector.input()
-            return Filter.useFilter(instances, stringToWordVector);
+            resultset = Filter.useFilter(dataset, stringToWordVector);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
     }
 
     public void init() {
@@ -49,6 +46,16 @@ public class PreprocessingFilter implements FilterStep {
         wordTokenizer.setDelimiters(" /\r\n\t.,;:\'\"()?!&#*+=_-<>`˜~|");
         stringToWordVector.setTokenizer(wordTokenizer);
         System.out.println("init preprocessing: "+stringToWordVector.toString());
+    }
+
+    @Override
+    public void setInitDataSet(Instances dataSet) {
+        this.dataset = dataSet;
+    }
+
+    @Override
+    public Instances getResultDataSet() {
+        return resultset;
     }
 
 }

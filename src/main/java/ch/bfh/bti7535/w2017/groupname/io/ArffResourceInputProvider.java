@@ -1,28 +1,43 @@
 package ch.bfh.bti7535.w2017.groupname.io;
 
+import ch.bfh.bti7535.w2017.groupname.process.ProcessStep;
 import weka.core.Instances;
 import weka.core.converters.ArffLoader;
 
 import java.io.IOException;
 import java.io.InputStream;
 
-public class ArffResourceInputProvider implements DataInputProvider {
+public class ArffResourceInputProvider implements DataProvider, ProcessStep {
 
     private String source_path;
 
+    private Instances dataSet;
+
     @Override
-    public DataInputProvider setSource(String source) {
+    public DataProvider setSource(String source) {
         source_path = source;
         return this;
     }
 
     @Override
-    public DataInputProvider init() {
-        return this;
+    public void init() {
     }
 
     @Override
-    public Instances loadData() {
+    public void process() {
+        dataSet = loadData();
+    }
+
+    @Override
+    public void setInitDataSet(Instances dataSet) {
+    }
+
+    @Override
+    public Instances getResultDataSet() {
+        return dataSet;
+    }
+
+    private Instances loadData() {
         ArffLoader loader = new ArffLoader();
         Instances data = null;
 

@@ -5,5 +5,7 @@ import weka.core.Instances;
 public interface ProcessStep {
 
     void init();
-    Instances process(Instances dataset);
+    void process() throws Exception;
+    void setInitDataSet(Instances dataSet);
+    Instances getResultDataSet();
 }
