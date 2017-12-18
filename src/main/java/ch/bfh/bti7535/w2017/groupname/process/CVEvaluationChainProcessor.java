@@ -24,7 +24,7 @@ public class CVEvaluationChainProcessor implements ChainProcessor {
 
         while (stepCount <= stopStep){
             ProcessStep step = chain.getSteps().get(stepCount);
-            System.out.println("execute filter "+(stepCount+1)+" of "+(stopStep-startStep+1));
+            System.out.println("execute step "+(stepCount+1)+" of "+(stopStep-startStep+1));
 
             Instances dataSet = null;
             step.init();

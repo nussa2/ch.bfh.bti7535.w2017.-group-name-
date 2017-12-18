@@ -9,7 +9,7 @@ import weka.core.Instances;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CVNBProcessChain implements ProcessChainConfiguration {
+public class ChainConfigCVNB implements ProcessChainConfiguration {
 
     private List<ProcessStep> steps = new ArrayList<>();
 

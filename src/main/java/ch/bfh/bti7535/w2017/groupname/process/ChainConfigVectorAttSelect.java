@@ -10,7 +10,7 @@ import weka.core.Instances;
 import java.util.ArrayList;
 import java.util.List;
 
-public class VectorASChain implements ProcessChainConfiguration {
+public class ChainConfigVectorAttSelect implements ProcessChainConfiguration {
 
     private List<ProcessStep> steps = new ArrayList<>();
 
