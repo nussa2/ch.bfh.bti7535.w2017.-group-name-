@@ -32,7 +32,7 @@ public class CSVFileInputProvider implements DataProvider, ProcessStep {
 
     @Override
     public void process() throws Exception {
-        parseCSV();
+        generateSentimentList(parseCSV());
         //dataSet = load();
     }
 
@@ -63,18 +63,16 @@ public class CSVFileInputProvider implements DataProvider, ProcessStep {
     private List<SentimentLexiconEntry> generateSentimentList(String[][] spreadsheet) {
         List<SentimentLexiconEntry> sentimentLexiconEntries = new ArrayList<>();
 
-        for (int i = 0; i < spreadsheet.length; i++) {
+        for (int i = 1; i < spreadsheet.length; i++) {
             String word[] = spreadsheet[i];
-            for (int j = 0; j < word.length; j++) {
-                SentimentLexiconEntry sentimentLexiconEntry = null;
-                if (j == 0){
-                    sentimentLexiconEntry = new SentimentLexiconEntry(word[0]);
-                } else {
-                    if (word[j] != null && word[j].isEmpty())
-                        sentimentLexiconEntry.addSentiment(word[j]);
+            SentimentLexiconEntry sentimentLexiconEntry = new SentimentLexiconEntry(word[0]);
+
+            for (int j = 1; j < word.length; j++) {
+                if (word[j] != null && !word[j].isEmpty()){
+                    sentimentLexiconEntry.addSentiment(word[j]);
                 }
             }
-            
+            sentimentLexiconEntries.add(sentimentLexiconEntry);
         }
 
         return sentimentLexiconEntries;
@@ -85,7 +83,7 @@ public class CSVFileInputProvider implements DataProvider, ProcessStep {
         String csvFile = composeFileName();
         String line = "";
         String cvsSplitBy = ";";
-        String[][] spreadsheet = new String[300][12000];
+        String[][] spreadsheet = new String[12000][300];
         //Map<String,Map<Integer,String>> parsedCSV = new HashMap<>();
 
         try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
@@ -99,7 +97,7 @@ public class CSVFileInputProvider implements DataProvider, ProcessStep {
 
                 for (int col = 0; col < lineSplits.length;col++){
                    // parsedCSV.put()
-                    spreadsheet[col][lineCount] = lineSplits[col];
+                    spreadsheet[lineCount][col] = lineSplits[col];
                 }
                 lineCount++;
             }
