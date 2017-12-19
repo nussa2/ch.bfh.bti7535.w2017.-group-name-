@@ -1,9 +1,6 @@
 package ch.bfh.bti7535.w2017.groupname;
 
-import ch.bfh.bti7535.w2017.groupname.process.CVEvaluationChainProcessor;
-import ch.bfh.bti7535.w2017.groupname.process.ChainConfigCVNB;
-import ch.bfh.bti7535.w2017.groupname.process.ChainConfigVectorAttSelect;
-import ch.bfh.bti7535.w2017.groupname.process.DefaultChainProcessor;
+import ch.bfh.bti7535.w2017.groupname.process.*;
 
 /**
  * Hello world!
@@ -12,13 +9,22 @@ public class App {
 
 
     public static void main(String[] args) {
-        String bla = "ChainConfigCVNB"; // TODO Mit args ersetzen
+        String bla = "CSVImport"; // TODO Mit args ersetzen
         switch (bla) {
             case "ChainConfigVectorAttSelect":
                 ChainConfigVectorAttSelect vectorASChain = new ChainConfigVectorAttSelect();
 
                 try {
                     new DefaultChainProcessor().process(vectorASChain);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
+            case "CSVImport":
+                ChainConfigCSVImport csvImport = new ChainConfigCSVImport();
+
+                try {
+                    new DefaultChainProcessor().process(csvImport);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

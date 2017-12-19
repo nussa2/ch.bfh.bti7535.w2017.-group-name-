@@ -18,14 +18,19 @@ public class AttributeSelectionFilter implements ProcessStep {
 
     @Override
     public void init() {
-        attributeSelection.setEvaluator(cfsSubsetEval);
-
+        cfsSubsetEval.setPoolSize(8);
+        cfsSubsetEval.setNumThreads(8);
+        cfsSubsetEval.setDebug(true);
         bestFirstSearch.setDirection(new SelectedTag("Forward",BestFirst.TAGS_SELECTION));
+        bestFirstSearch.setLookupCacheSize(4);
+
         try {
             bestFirstSearch.setSearchTermination(5);
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        attributeSelection.setEvaluator(cfsSubsetEval);
         attributeSelection.setSearch(bestFirstSearch);
         System.out.println("init attribute selection: "+attributeSelection.toString());
     }

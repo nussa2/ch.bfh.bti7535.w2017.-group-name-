@@ -1,27 +1,25 @@
 package ch.bfh.bti7535.w2017.groupname.process;
 
-
-import ch.bfh.bti7535.w2017.groupname.classify.NBClassifier;
-import ch.bfh.bti7535.w2017.groupname.filter.CrossValidationFilter;
-import ch.bfh.bti7535.w2017.groupname.io.ArffFileInputProvider;
+import ch.bfh.bti7535.w2017.groupname.filter.AttributeSelectionFilter;
+import ch.bfh.bti7535.w2017.groupname.filter.PreprocessingFilter;
 import ch.bfh.bti7535.w2017.groupname.io.ArffResourceInputProvider;
+import ch.bfh.bti7535.w2017.groupname.io.ArffTempFileOutputProvider;
+import ch.bfh.bti7535.w2017.groupname.io.CSVFileInputProvider;
 import ch.bfh.bti7535.w2017.groupname.io.InstancesLogger;
 import weka.core.Instances;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ChainConfigCVNB implements ProcessChainConfiguration {
+public class ChainConfigCSVImport implements ProcessChainConfiguration {
 
     private List<ProcessStep> steps = new ArrayList<>();
 
     @Override
     public void init() {
-        addStep((ProcessStep) new ArffResourceInputProvider().setSource("/movie_sa_selected_attributes_top_90.arff"));
-        //addStep((ProcessStep) new ArffFileInputProvider().setSource("/temp/movie-sa/"));
+        addStep((ProcessStep) new CSVFileInputProvider().setSource("/temp/movie-sa/"));
         addStep(new InstancesLogger());
-        addStep(new CrossValidationFilter());
-        addStep(new NBClassifier());
+        addStep((ProcessStep) new ArffTempFileOutputProvider().setSource("/temp/movie-sa/"));
     }
 
     @Override
@@ -34,8 +32,8 @@ public class ChainConfigCVNB implements ProcessChainConfiguration {
         return steps;
     }
 
-    public Instances getResultSet(){
+    @Override
+    public Instances getResultSet() {
         return steps.get(steps.size()-1).getResultDataSet();
     }
-
 }

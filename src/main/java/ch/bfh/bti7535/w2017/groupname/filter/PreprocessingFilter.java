@@ -42,7 +42,7 @@ public class PreprocessingFilter implements ProcessStep {
         stringToWordVector.setOutputWordCounts(true);
         //stringToWordVector.setPeriodicPruning(-1.0);
         //stringToWordVector.setStemmer(stemmer);
-        stringToWordVector.setWordsToKeep(4000);
+        stringToWordVector.setWordsToKeep(10000);
         wordTokenizer.setDelimiters(" /\r\n\t.,;:\'\"()?!&#*+=_-<>`˜~|");
         stringToWordVector.setTokenizer(wordTokenizer);
         System.out.println("init preprocessing: "+stringToWordVector.toString());
