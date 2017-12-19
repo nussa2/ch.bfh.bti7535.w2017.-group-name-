@@ -1,6 +1,6 @@
 package ch.bfh.bti7535.w2017.groupname.io;
 
-import ch.bfh.bti7535.w2017.groupname.features.WordSentiment;
+import ch.bfh.bti7535.w2017.groupname.features.SentimentLexiconEntry;
 import ch.bfh.bti7535.w2017.groupname.process.ProcessStep;
 import weka.core.Instances;
 import weka.core.converters.CSVLoader;
@@ -9,7 +9,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CSVFileInputProvider implements DataProvider, ProcessStep {
 
@@ -59,24 +60,24 @@ public class CSVFileInputProvider implements DataProvider, ProcessStep {
         return System.getProperty("user.home") + destPath +filename+ CSV_FILE_ENDING;
     }
 
-    private List<WordSentiment> generateSentimentList(String[][] spreadsheet){
-        List<WordSentiment> wordSentiments = new ArrayList<>();
+    private List<SentimentLexiconEntry> generateSentimentList(String[][] spreadsheet) {
+        List<SentimentLexiconEntry> sentimentLexiconEntries = new ArrayList<>();
 
         for (int i = 0; i < spreadsheet.length; i++) {
             String word[] = spreadsheet[i];
             for (int j = 0; j < word.length; j++) {
-                WordSentiment wordSentiment = null;
+                SentimentLexiconEntry sentimentLexiconEntry = null;
                 if (j == 0){
-                    wordSentiment = new WordSentiment(word[0]);
+                    sentimentLexiconEntry = new SentimentLexiconEntry(word[0]);
                 } else {
                     if (word[j] != null && word[j].isEmpty())
-                    wordSentiment.addSentiment(word[j]);
+                        sentimentLexiconEntry.addSentiment(word[j]);
                 }
             }
             
         }
 
-        return wordSentiments;
+        return sentimentLexiconEntries;
     }
 
     private String[][] parseCSV(){
