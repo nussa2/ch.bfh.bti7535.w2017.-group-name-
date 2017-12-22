@@ -60,7 +60,8 @@ public class CSVFileInputProvider implements DataProvider, ProcessStep {
         return System.getProperty("user.home") + destPath +filename+ CSV_FILE_ENDING;
     }
 
-    private List<SentimentLexiconEntry> generateSentimentList(String[][] spreadsheet) {
+    //TODO
+    public List<SentimentLexiconEntry> generateSentimentList(String[][] spreadsheet) {
         List<SentimentLexiconEntry> sentimentLexiconEntries = new ArrayList<>();
 
         for (int i = 1; i < spreadsheet.length; i++) {
@@ -78,22 +79,25 @@ public class CSVFileInputProvider implements DataProvider, ProcessStep {
         return sentimentLexiconEntries;
     }
 
-    private String[][] parseCSV(){
+    //TODO
+    public String[][] parseCSV() {
 
         String csvFile = composeFileName();
         String line = "";
         String cvsSplitBy = ";";
         String[][] spreadsheet = new String[12000][300];
         //Map<String,Map<Integer,String>> parsedCSV = new HashMap<>();
-
-        try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
+        ClassLoader classLoader = getClass().getClassLoader();
+        File file = new File(classLoader.getResource("inquirerbasic.CSV").getFile());
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             int lineCount = 0;
 
             while ((line = br.readLine()) != null) {
 
                 // use comma as separator
                 String[] lineSplits = line.split(cvsSplitBy);
-                System.out.println("number of splits: "+lineSplits.length);
+                //System.out.println("number of splits: "+lineSplits.length);
+                lineSplits[0] = lineSplits[0].toLowerCase();
 
                 for (int col = 0; col < lineSplits.length;col++){
                    // parsedCSV.put()

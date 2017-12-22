@@ -23,4 +23,8 @@ public class SentimentLexiconEntry {
     public boolean hasSentiment(String sentiment){
         return sentiments.contains(sentiment);
     }
+
+    public String getWord() {
+        return word;
+    }
 }
