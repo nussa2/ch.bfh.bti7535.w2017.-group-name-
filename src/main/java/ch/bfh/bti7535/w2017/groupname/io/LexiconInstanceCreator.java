@@ -60,9 +60,7 @@ public class LexiconInstanceCreator {
     }
 
     private static void getAndSetLexicon() {
-        CSVFileInputProvider csvFileInputProvider = new CSVFileInputProvider();
-        String[][] parsResult = csvFileInputProvider.parseCSV();
-        lexicon = csvFileInputProvider.generateSentimentList(parsResult);
+        lexicon = new SentimentLexiconProvider().loadSentimentLexicon();
     }
 
     private static void addWantedAttributes() {

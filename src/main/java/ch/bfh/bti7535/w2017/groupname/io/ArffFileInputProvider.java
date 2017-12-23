@@ -60,7 +60,7 @@ public class ArffFileInputProvider implements DataProvider, ProcessStep{
     }
 
     private String composeFileName(){
-        String filename = "movie_sa_temp_1513615918865";
-        return System.getProperty("user.home") + destPath +filename+ ARFF_FILE_ENDING;
+        //String filename = "movie_sa_temp_1513615918865";
+        return System.getProperty("user.home") + destPath /*+filename+ ARFF_FILE_ENDING*/;
     }
 }

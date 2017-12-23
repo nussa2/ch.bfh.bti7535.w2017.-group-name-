@@ -12,56 +12,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CSVFileInputProvider implements DataProvider, ProcessStep {
+public class SentimentLexiconProvider {
 
-    private Instances dataSet;
-    String destPath;
-
-    public static final String CSV_FILE_ENDING = ".csv";
-
-    @Override
-    public DataProvider setSource(String source) {
-        destPath = source;
-        return this;
+    public List<SentimentLexiconEntry> loadSentimentLexicon(){
+        return generateSentimentList(parseCSV());
     }
 
-    @Override
-    public void init() {
-
-    }
-
-    @Override
-    public void process() throws Exception {
-        generateSentimentList(parseCSV());
-        //dataSet = load();
-    }
-
-    @Override
-    public void setInitDataSet(Instances dataSet) {
-
-    }
-
-    @Override
-    public Instances getResultDataSet() {
-        return dataSet;
-    }
-
-    private Instances load() throws IOException {
-        CSVLoader loader = new CSVLoader();
-        loader.setFieldSeparator(";");
-        loader.setSource(new File(composeFileName()));
-        Instances data = loader.getDataSet();
-
-        return data;
-    }
-
-    private String composeFileName(){
-        String filename = "inquirerbasic";
-        return System.getProperty("user.home") + destPath +filename+ CSV_FILE_ENDING;
-    }
-
-    //TODO
-    public List<SentimentLexiconEntry> generateSentimentList(String[][] spreadsheet) {
+    private List<SentimentLexiconEntry> generateSentimentList(String[][] spreadsheet) {
         List<SentimentLexiconEntry> sentimentLexiconEntries = new ArrayList<>();
 
         for (int i = 1; i < spreadsheet.length; i++) {
@@ -79,10 +36,8 @@ public class CSVFileInputProvider implements DataProvider, ProcessStep {
         return sentimentLexiconEntries;
     }
 
-    //TODO
-    public String[][] parseCSV() {
+    private String[][] parseCSV() {
 
-        String csvFile = composeFileName();
         String line = "";
         String cvsSplitBy = ";";
         String[][] spreadsheet = new String[12000][300];

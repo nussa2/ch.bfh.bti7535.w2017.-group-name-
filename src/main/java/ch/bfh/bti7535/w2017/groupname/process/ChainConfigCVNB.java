@@ -17,8 +17,8 @@ public class ChainConfigCVNB implements ProcessChainConfiguration {
 
     @Override
     public void init() {
-        addStep((ProcessStep) new ArffResourceInputProvider().setSource("/movie_sa_selected_attributes_top_90.arff"));
-        //addStep((ProcessStep) new ArffFileInputProvider().setSource("/temp/movie-sa/"));
+        //addStep((ProcessStep) new ArffResourceInputProvider().setSource("/movie_sa_selected_attributes_top_90.arff"));
+        addStep((ProcessStep) new ArffFileInputProvider().setSource("/temp/movie-sa/movie_sa_temp_1513713868164.arff"));
         addStep(new InstancesLogger());
         addStep(new CrossValidationFilter());
         addStep(new NBClassifier());

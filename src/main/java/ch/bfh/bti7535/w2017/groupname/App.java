@@ -9,37 +9,30 @@ public class App {
 
 
     public static void main(String[] args) {
-        String bla = "CSVImport"; // TODO Mit args ersetzen
-        switch (bla) {
-            case "ChainConfigVectorAttSelect":
-                ChainConfigVectorAttSelect vectorASChain = new ChainConfigVectorAttSelect();
+        String bla = "ChainConfigSentimentLexicon"; // TODO Mit args ersetzen
+        try {
+            switch (bla) {
+                case "ChainConfigSentimentLexicon":
+                    ChainConfigSentimentLexicon sentimentLexiconChain = new ChainConfigSentimentLexicon();
+                    new DefaultChainProcessor().process(sentimentLexiconChain);
 
-                try {
+                    break;
+                case "ChainConfigVectorAttSelect":
+                    ChainConfigVectorAttSelect vectorASChain = new ChainConfigVectorAttSelect();
                     new DefaultChainProcessor().process(vectorASChain);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                break;
-            case "CSVImport":
-                ChainConfigCSVImport csvImport = new ChainConfigCSVImport();
 
-                try {
-                    new DefaultChainProcessor().process(csvImport);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                break;
-            case "ChainConfigCVNB":
-                ChainConfigCVNB filterChain = new ChainConfigCVNB();
+                    break;
+                case "ChainConfigCVNB":
 
-                try {
+                    ChainConfigCVNB filterChain = new ChainConfigCVNB();
                     CVEvaluationChainProcessor cvEvaluationChainProcessor = new CVEvaluationChainProcessor();
                     cvEvaluationChainProcessor.process(filterChain);
                     System.out.println("Error Rate: " + cvEvaluationChainProcessor.getValidationResultErrorRate());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                break;
+
+                    break;
+            }
+        } catch (Exception e){
+            e.printStackTrace();
         }
     }
 
