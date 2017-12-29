@@ -4,7 +4,6 @@ package ch.bfh.bti7535.w2017.groupname.process;
 import ch.bfh.bti7535.w2017.groupname.classify.NBClassifier;
 import ch.bfh.bti7535.w2017.groupname.filter.CrossValidationFilter;
 import ch.bfh.bti7535.w2017.groupname.io.ArffFileInputProvider;
-import ch.bfh.bti7535.w2017.groupname.io.ArffResourceInputProvider;
 import ch.bfh.bti7535.w2017.groupname.io.InstancesLogger;
 import weka.core.Instances;
 
@@ -18,7 +17,7 @@ public class ChainConfigCVNB implements ProcessChainConfiguration {
     @Override
     public void init() {
         //addStep((ProcessStep) new ArffResourceInputProvider().setSource("/movie_sa_selected_attributes_top_90.arff"));
-        addStep((ProcessStep) new ArffFileInputProvider().setSource("/temp/movie-sa/movie_sa_temp_1513713868164.arff"));
+        addStep((ProcessStep) new ArffFileInputProvider().setSource("/temp/movie-sa/movie_sa_temp_1514554985512.arff"));
         addStep(new InstancesLogger());
         addStep(new CrossValidationFilter());
         addStep(new NBClassifier());
