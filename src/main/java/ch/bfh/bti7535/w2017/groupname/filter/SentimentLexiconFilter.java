@@ -5,13 +5,15 @@ import ch.bfh.bti7535.w2017.groupname.io.InstanceBuilder;
 import ch.bfh.bti7535.w2017.groupname.io.SentimentLexiconProvider;
 import ch.bfh.bti7535.w2017.groupname.process.ProcessStep;
 import weka.core.Attribute;
-import weka.core.DenseInstance;
 import weka.core.Instance;
 import weka.core.Instances;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Filter zum Klassifizieren mit dem General Inquirer von Harward
+ */
 public class SentimentLexiconFilter implements ProcessStep {
 
     private Instances dataSet;
@@ -21,13 +23,16 @@ public class SentimentLexiconFilter implements ProcessStep {
 
     @Override
     public void init() {
+        // Sentiment-Lexikon laden
         lexicon = new SentimentLexiconProvider().loadSentimentLexicon();
-        //addWantedAttributes("Positiv", "Negativ");
+        // Zu berücksichtigende Attribute auswählen
         addWantedAttributes("Positiv", "Negativ", "Pstv", "Affil", "Ngtv", "Hostile", "Strong", "Power", "Weak", "Submit",
                 "Active", "Passive", "Pleasur", "Pain", "Feel", "Arousal", "EMOT", "Virtue", "Vice", "Ovrst", "Undrst",
                 "Academ", "Doctrin", "Yes", "No", "Quality");
 
-        /*addWantedAttributes("Positiv", "Negativ", "Pstv", "Affil", "Ngtv", "Hostile", "Strong", "Power", "Weak", "Submit",
+        /*
+        Alle Möglichen Spalten-Bezeichnungen
+        addWantedAttributes("Positiv", "Negativ", "Pstv", "Affil", "Ngtv", "Hostile", "Strong", "Power", "Weak", "Submit",
                 "Active", "Passive", "Pleasur", "Pain", "Feel", "Arousal", "EMOT", "Virtue", "Vice", "Ovrst", "Undrst",
                 "Academ", "Doctrin", "Econ@", "Exch", "ECON", "Exprsv", "Legal", "Milit", "Polit@", "POLIT", "Relig",
                 "Role", "COLL", "Work", "Ritual", "SocRel", "Race", "Kin@", "MALE", "Female", "Nonadlt", "HU", "ANI",
@@ -54,8 +59,8 @@ public class SentimentLexiconFilter implements ProcessStep {
 
         while (instances.hasMoreElements()) {
             Instance instance = instances.nextElement();
-            Map<String,Double> wordlist = extractWordlist(instance);
-            Map<String,Double> resultList = checkWordlistAgainstSentimentLexicon(wordlist);
+            Map<String, Double> wordlist = extractWordlist(instance);
+            Map<String, Double> resultList = checkWordlistAgainstSentimentLexicon(wordlist);
             List<Object> values = new ArrayList<>();
             values.addAll(resultList.values());
             values.add(dataSet.classAttribute().value((int) instance.classValue()));
@@ -68,11 +73,16 @@ public class SentimentLexiconFilter implements ProcessStep {
         resultSet = newInstances;
     }
 
-    private InstanceBuilder initInstanceBuilder(){
+    /**
+     * Erstellt einen InstanceBuilder
+     *
+     * @return
+     */
+    private InstanceBuilder initInstanceBuilder() {
         InstanceBuilder instanceBuilder = new InstanceBuilder();
         try {
             instanceBuilder.setRelationName("sentiment_lexicon_based_relation");
-            for (String attribute:wantedAttributes) {
+            for (String attribute : wantedAttributes) {
                 instanceBuilder.addNumericAttribute(attribute);
             }
             instanceBuilder.addNominalAttribute("review_class", "ndef", "neg", "pos");
@@ -84,17 +94,20 @@ public class SentimentLexiconFilter implements ProcessStep {
         return instanceBuilder;
     }
 
-    private Map<String,Double> extractWordlist(Instance instance){
-        //System.out.println("Instance to check against lexicon: "+instance);
-        //instance.value
-        Map<String,Double> wordlist = new HashMap<>();
+    /**
+     * Extrahiert aus einer Instance die Wordlist
+     *
+     * @param instance
+     * @return
+     */
+    private Map<String, Double> extractWordlist(Instance instance) {
+        Map<String, Double> wordlist = new HashMap<>();
         for (int i = 1; i < instance.numValues(); i++) {
             int attrIndex = instance.index(i);
             Attribute attribute = dataSet.attribute(attrIndex);
             String name = attribute.name();
             double value = instance.value(attrIndex);
-            //System.out.println("attribute: "+name+" value: "+value);
-            wordlist.put(name,value);
+            wordlist.put(name, value);
         }
         return wordlist;
     }
@@ -109,13 +122,17 @@ public class SentimentLexiconFilter implements ProcessStep {
         return resultSet;
     }
 
-    private Map<String, Double> checkWordlistAgainstSentimentLexicon(Map<String,Double> wordlist) {
+    /**
+     * Liefert einen counter der Attribute zurück
+     *
+     * @param wordlist
+     * @return
+     */
+    private Map<String, Double> checkWordlistAgainstSentimentLexicon(Map<String, Double> wordlist) {
         Map<String, Double> counter = new HashMap<>();
-        //List<String> indexer = new ArrayList<>();
 
         for (String attribute : wantedAttributes) {
             counter.put(attribute, 0.0);
-            //indexer.add(attribute);
         }
 
         for (String word : wordlist.keySet()) {
@@ -126,34 +143,17 @@ public class SentimentLexiconFilter implements ProcessStep {
             for (String attribute : attributes) {
                 if (counter.containsKey(attribute)) {
                     Double oldValue = counter.get(attribute);
-                    counter.put(attribute, oldValue+wordlist.get(word));
-                    //System.out.println("word "+word+" is "+attribute);
+                    counter.put(attribute, oldValue + wordlist.get(word));
                 }
             }
         }
-        //Map<String, Double> attributeValues = calculateAttributeValues(counter);
-        //System.out.println("attributeValues = " + counter);
-
-        /*Instance newInstance = new DenseInstance(attributeValues.size());
-        for (String attribute : attributeValues.keySet()) {
-            int index = indexer.indexOf(attribute);
-            newInstance.setValue(index, attributeValues.get(attribute));
-        }
-
-        System.out.println("inst = " + newInstance);*/
         return counter;
     }
 
-
-
-    /*private Map<String, Double> calculateAttributeValues(Map<String, Double> counter) {
-        Map<String, Double> result = new HashMap<>();
-        for (String s : counter.keySet()) {
-            result.put(s, (counter.get(s)));
-        }
-        return result;
-    }*/
-
+    /**
+     * Zu berücksichtigendes Attribut hinzufügen
+     * @param wantedAttributes
+     */
     private void addWantedAttributes(String... wantedAttributes) {
         for (String attribute : wantedAttributes) {
             this.wantedAttributes.add(attribute);
@@ -161,6 +161,11 @@ public class SentimentLexiconFilter implements ProcessStep {
         }
     }
 
+    /**
+     * liefert die Word-Sentiments für ein Wort aus dem Lexicon
+     * @param word
+     * @return
+     */
     private List<String> findWordAttributes(String word) {
         List<SentimentLexiconEntry> collect = lexicon.stream() //
                 .filter(s -> (s.getWord() != null && s.getWord() //

@@ -5,6 +5,9 @@ import weka.core.Instances;
 
 import java.util.Random;
 
+/**
+ * k-fold zum Trainieren und Testen
+ */
 public class CrossValidationFilter implements ProcessStep {
 
     int seed = 5;
@@ -19,9 +22,11 @@ public class CrossValidationFilter implements ProcessStep {
 
     @Override
     public void process() {
-        Random rand = new Random(seed);   // create seeded number generator
-        resultset = new Instances(dataset);   // create copy of original data
-        resultset.randomize(rand);         // randomize data with number generator
+        // Seeded Number Generator erstellen
+        Random rand = new Random(seed);
+        // Orginaldaten kopieren
+        resultset = new Instances(dataset);
+        resultset.randomize(rand);
         resultset.stratify(FOLDS);
     }
 

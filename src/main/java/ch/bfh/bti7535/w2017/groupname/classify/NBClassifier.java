@@ -1,11 +1,12 @@
 package ch.bfh.bti7535.w2017.groupname.classify;
 
-import ch.bfh.bti7535.w2017.groupname.process.ProcessStep;
 import weka.classifiers.Classifier;
-import weka.classifiers.Evaluation;
 import weka.classifiers.bayes.NaiveBayes;
 import weka.core.Instances;
 
+/**
+ * Der NaiveBayes-Classifier
+ */
 public class NBClassifier implements ClassifierStep {
 
     NaiveBayes naiveBayes = new NaiveBayes();
@@ -14,7 +15,7 @@ public class NBClassifier implements ClassifierStep {
 
     @Override
     public void init() {
-
+        // no implementation
     }
 
     @Override

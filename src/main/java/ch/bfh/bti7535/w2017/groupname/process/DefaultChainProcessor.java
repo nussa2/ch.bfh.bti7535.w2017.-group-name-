@@ -1,5 +1,8 @@
 package ch.bfh.bti7535.w2017.groupname.process;
 
+/**
+ * Ein Processor zum generieren von ARFF-Files (ohne anschliessende Validation)
+ */
 public class DefaultChainProcessor implements ChainProcessor{
 
     private int stepCount = 0;
@@ -9,7 +12,15 @@ public class DefaultChainProcessor implements ChainProcessor{
         applyFilters(0, (chain.getSteps().size()-1),chain);
     }
 
-    private void applyFilters( int startStep, int stopStep, ProcessChainConfiguration chain) throws Exception {
+    /**
+     * Wendet die gewünschten Filter an
+     *
+     * @param startStep
+     * @param stopStep
+     * @param chain
+     * @throws Exception
+     */
+    private void applyFilters(int startStep, int stopStep, ProcessChainConfiguration chain) throws Exception {
 
         System.out.println("started process chain.");
         //System.out.println("instances = " + instances);
@@ -29,7 +40,5 @@ public class DefaultChainProcessor implements ChainProcessor{
 
             stepCount++;
         }
-
-        //System.out.println("instances = " + instances);
     }
 }

@@ -10,10 +10,7 @@ import java.util.Enumeration;
 import java.util.List;
 
 /**
- * Generates an weka.core.Instances object with different attribute types.
- *
- * @author FracPete (fracpete at waikato dot ac dot nz)
- * @version $Revision: 6054 $
+ * Gibt Instances nach dem gewünschten Schema zurück
  */
 public class InstanceBuilder {
 
@@ -26,16 +23,30 @@ public class InstanceBuilder {
     public InstanceBuilder() {
     }
 
+    /**
+     * Setzen des Relationsnamens
+     *
+     * @param relationName neuer Name
+     * @return
+     */
     public InstanceBuilder setRelationName(String relationName) {
         this.relationName = relationName;
         return this;
     }
 
+    /**
+     * Initiieren des ClassIndex
+     */
     public void initClassIndex(){
         this.setClassIndex = true;
     }
 
-    public Instances build() throws Exception {
+    /**
+     * Effektives Bereitstellen der Daten
+     *
+     * @return
+     */
+    public Instances build() {
         System.out.println("started building instances");
         dataSet = new Instances(relationName, attributes,0);
         if (setClassIndex) {
@@ -46,16 +57,23 @@ public class InstanceBuilder {
 
     }
 
-    public InstanceBuilder addStringAttribute(String name){
-        attributes.add(new Attribute(name,(ArrayList<String>) null));
-        return this;
-    }
-
+    /**
+     * Hinzufügen eines Zahlen-Attributes
+     * @param name
+     * @return
+     */
     public InstanceBuilder addNumericAttribute(String name){
         attributes.add(new Attribute(name));
         return this;
     }
 
+    /**
+     * Hinzufügen eines Nominal-Attributes
+     * @param name
+     * @param values
+     * @return
+     * @throws IllegalAccessException
+     */
     public InstanceBuilder addNominalAttribute(String name, String ... values) throws IllegalAccessException {
         if (values.length < 1 ){
             throw new IllegalAccessException("too few values");
@@ -64,6 +82,12 @@ public class InstanceBuilder {
         return this;
     }
 
+    /**
+     * Hinzufügen der Daten
+     * @param values
+     * @return
+     * @throws IllegalAccessException
+     */
     public InstanceBuilder addData(List<Object> values) throws IllegalAccessException {
 
         if (values.size() != attributes.size()){
@@ -73,7 +97,10 @@ public class InstanceBuilder {
         return this;
     }
 
-    private void addData() throws IllegalAccessException {
+    /**
+     * Hinzufügen der Daten für interne Verwendung
+     */
+    private void addData() {
         for (List<Object> values:rawData) {
 
             double[] vals = new double [attributes.size()];
@@ -93,10 +120,14 @@ public class InstanceBuilder {
 
             dataSet.add(new DenseInstance(1.0, vals));
         }
-
-
     }
 
+    /**
+     * Überprüft, ob das Nominale Attribut auch ein Value enthält
+     * @param attribute
+     * @param value
+     * @return
+     */
     private boolean checkIfNomAttrContainsValue(Attribute attribute, Object value){
         Enumeration<Object> values = attribute.enumerateValues();
         while (values.hasMoreElements()){

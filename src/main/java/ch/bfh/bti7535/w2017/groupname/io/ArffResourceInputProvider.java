@@ -7,6 +7,9 @@ import weka.core.converters.ArffLoader;
 import java.io.IOException;
 import java.io.InputStream;
 
+/**
+ * Liest ein ARFF-File aus den Resourcen und liefert die Instanzen zurück
+ */
 public class ArffResourceInputProvider implements DataProvider, ProcessStep {
 
     private String source_path;
@@ -37,6 +40,11 @@ public class ArffResourceInputProvider implements DataProvider, ProcessStep {
         return dataSet;
     }
 
+    /**
+     * Die Daten werden geladen und zurückgeliefert.
+     *
+     * @return
+     */
     private Instances loadData() {
         ArffLoader loader = new ArffLoader();
         Instances data = null;

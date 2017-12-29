@@ -5,11 +5,14 @@ import ch.bfh.bti7535.w2017.groupname.filter.PreprocessingFilter;
 import ch.bfh.bti7535.w2017.groupname.io.ArffResourceInputProvider;
 import ch.bfh.bti7535.w2017.groupname.io.ArffTempFileOutputProvider;
 import ch.bfh.bti7535.w2017.groupname.io.InstancesLogger;
-import weka.core.Instances;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * ChainConfiguration zur Anwendung des AttributeSelectionFilter's. Die entsprechenden Daten werden
+ * anschliessend im User-Home gespeichert
+ */
 public class ChainConfigVectorAttSelect implements ProcessChainConfiguration {
 
     private List<ProcessStep> steps = new ArrayList<>();
@@ -31,10 +34,5 @@ public class ChainConfigVectorAttSelect implements ProcessChainConfiguration {
     @Override
     public List<ProcessStep> getSteps() {
         return steps;
-    }
-
-    @Override
-    public Instances getResultSet() {
-        return steps.get(steps.size()-1).getResultDataSet();
     }
 }

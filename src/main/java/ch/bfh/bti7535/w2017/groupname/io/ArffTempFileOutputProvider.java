@@ -8,13 +8,15 @@ import java.io.File;
 import java.io.IOException;
 import java.time.Instant;
 
-public class ArffTempFileOutputProvider implements DataProvider, ProcessStep{
+/**
+ * Schreibt ein ARFF-File ins UserHome
+ */
+public class ArffTempFileOutputProvider implements DataProvider, ProcessStep {
 
     public static final String ARFF_FILE_ENDING = ".arff";
     ArffSaver saver = new ArffSaver();
     private Instances dataSet;
     String destPath;
-
 
     @Override
     public void init() {
@@ -36,11 +38,20 @@ public class ArffTempFileOutputProvider implements DataProvider, ProcessStep{
         return dataSet;
     }
 
-    private String composePath(){
-        String filename = "movie_sa_temp_"+ Instant.now().toEpochMilli();
-        return System.getProperty("user.home") + destPath +filename+ ARFF_FILE_ENDING;
+    /**
+     * Setzt den Pfad zum neuen File zusammen
+     *
+     * @return
+     */
+    private String composePath() {
+        String filename = "movie_sa_temp_" + Instant.now().toEpochMilli();
+        return System.getProperty("user.home") + destPath + filename + ARFF_FILE_ENDING;
     }
 
+    /**
+     * Hier passiert das effektive Schreiben auf die HD
+     * @param dataset
+     */
     private void saveData(Instances dataset) {
         File outputFile = new File(composePath());
         try {

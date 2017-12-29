@@ -3,6 +3,9 @@ package ch.bfh.bti7535.w2017.groupname.features;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Definiert ein Wort mit den zugehörigen Sentiments gemäss http://www.wjh.harvard.edu/~inquirer/spreadsheet_guide.htm
+ */
 public class SentimentLexiconEntry {
 
     private String word;
@@ -18,10 +21,6 @@ public class SentimentLexiconEntry {
 
     public void addSentiment(String sentiment){
         sentiments.add(sentiment);
-    }
-
-    public boolean hasSentiment(String sentiment){
-        return sentiments.contains(sentiment);
     }
 
     public String getWord() {

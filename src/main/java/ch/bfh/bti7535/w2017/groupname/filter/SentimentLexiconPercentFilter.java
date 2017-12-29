@@ -11,6 +11,10 @@ import weka.core.Instances;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Filter zum Klassifizieren mit dem General Inquirer von Harward
+ * Die Counts sind aber Prozentual auf die Länge des Textes herabgebrochen
+ */
 public class SentimentLexiconPercentFilter implements ProcessStep {
 
     private Instances dataSet;
@@ -21,8 +25,11 @@ public class SentimentLexiconPercentFilter implements ProcessStep {
     @Override
     public void init() {
         lexicon = new SentimentLexiconProvider().loadSentimentLexicon();
+        // Zu berücksichtigende Attribute auswählen
         addWantedAttributes("Positiv", "Negativ", "Hostile", "Pleasur", "Pain");
-        /*addWantedAttributes("Positiv", "Negativ", "Pstv", "Affil", "Ngtv", "Hostile", "Strong", "Power", "Weak", "Submit",
+        /*
+        Alle Möglichen Spalten-Bezeichnungen
+        addWantedAttributes("Positiv", "Negativ", "Pstv", "Affil", "Ngtv", "Hostile", "Strong", "Power", "Weak", "Submit",
                 "Active", "Passive", "Pleasur", "Pain", "Feel", "Arousal", "EMOT", "Virtue", "Vice", "Ovrst", "Undrst",
                 "Academ", "Doctrin", "Econ@", "Exch", "ECON", "Exprsv", "Legal", "Milit", "Polit@", "POLIT", "Relig",
                 "Role", "COLL", "Work", "Ritual", "SocRel", "Race", "Kin@", "MALE", "Female", "Nonadlt", "HU", "ANI",
@@ -63,6 +70,12 @@ public class SentimentLexiconPercentFilter implements ProcessStep {
         resultSet = newInstances;
     }
 
+
+    /**
+     * Erstellt einen InstanceBuilder
+     *
+     * @return
+     */
     private InstanceBuilder initInstanceBuilder() {
         InstanceBuilder instanceBuilder = new InstanceBuilder();
         try {
@@ -79,6 +92,13 @@ public class SentimentLexiconPercentFilter implements ProcessStep {
         return instanceBuilder;
     }
 
+
+    /**
+     * Extrahiert aus einer Instance die Wordlist
+     *
+     * @param instance
+     * @return
+     */
     private Map<String, Double> extractWordlist(Instance instance) {
         //System.out.println("Instance to check against lexicon: "+instance);
         //instance.value
@@ -104,6 +124,12 @@ public class SentimentLexiconPercentFilter implements ProcessStep {
         return resultSet;
     }
 
+
+    /**
+     * Liefert einen prozentualen Counter der Attribute zurück
+     * @param wordlist
+     * @return
+     */
     private Map<String, Double> checkWordlistAgainstSentimentLexicon(Map<String, Double> wordlist) {
         Map<String, Double> counter = new HashMap<>();
         //List<String> indexer = new ArrayList<>();
@@ -130,6 +156,11 @@ public class SentimentLexiconPercentFilter implements ProcessStep {
         return attributeValues;
     }
 
+    /**
+     * Abstrahiert die Textlänge im Bezug auf die Anzahl des Auftretens des Wortes
+     * @param counter
+     * @return
+     */
     private Map<String, Double> calculateAttributeValues(Map<String, Double> counter) {
         Map<String, Double> result = new HashMap<>();
         Double count = calculateWordCount(counter);
@@ -139,6 +170,11 @@ public class SentimentLexiconPercentFilter implements ProcessStep {
         return result;
     }
 
+    /**
+     * Zählt die Anzahl der Sentiments im Text
+     * @param counter
+     * @return
+     */
     private Double calculateWordCount(Map<String, Double> counter) {
         Double count = new Double(0);
         for (Double c : counter.values()) {
@@ -147,6 +183,10 @@ public class SentimentLexiconPercentFilter implements ProcessStep {
         return count;
     }
 
+    /**
+     * Zu berücksichtigendes Attribut hinzufügen
+     * @param wantedAttributes
+     */
     private void addWantedAttributes(String... wantedAttributes) {
         for (String attribute : wantedAttributes) {
             this.wantedAttributes.add(attribute);
@@ -154,6 +194,11 @@ public class SentimentLexiconPercentFilter implements ProcessStep {
         }
     }
 
+    /**
+     * liefert die Word-Sentiments für ein Wort aus dem Lexicon
+     * @param word
+     * @return
+     */
     private List<String> findWordAttributes(String word) {
         List<SentimentLexiconEntry> collect = lexicon.stream() //
                 .filter(s -> (s.getWord() != null && s.getWord() //

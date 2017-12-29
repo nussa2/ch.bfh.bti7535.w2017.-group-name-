@@ -7,22 +7,27 @@ import ch.bfh.bti7535.w2017.groupname.process.*;
  */
 public class App {
 
-
+    /**
+     * Hauptprogramm zum generieren der ARFF-Files im Temp-Ordner (PP_....) und zum Validieren
+     * Run-Configs sind im .idea-Ordner zur Verfügung gestellt
+     *
+     * @param args Die durchzuführende Aktion
+     */
     public static void main(String[] args) {
         try {
             switch (args[0]) {
                 case "PP_SentimentLexiconCount":
-                    // 62.3%
+                    // Erfolgsquote: 63.4%
                     ChainConfigSentimentLexicon sentimentLexiconChain = new ChainConfigSentimentLexicon();
                     new DefaultChainProcessor().process(sentimentLexiconChain);
                     break;
                 case "PP_SentimentLexiconPercent":
-                    // 63.5%
+                    // Erfolgsquote: 63.5%
                     ChainConfigSentimentPercentLexicon sentimentLexiconPercentChain = new ChainConfigSentimentPercentLexicon();
                     new DefaultChainProcessor().process(sentimentLexiconPercentChain);
                     break;
                 case "PP_AttributeSelection":
-                    // 78.3%
+                    // Erfolgsquote: 78.3%
                     ChainConfigVectorAttSelect vectorASChain = new ChainConfigVectorAttSelect();
                     new DefaultChainProcessor().process(vectorASChain);
                     break;

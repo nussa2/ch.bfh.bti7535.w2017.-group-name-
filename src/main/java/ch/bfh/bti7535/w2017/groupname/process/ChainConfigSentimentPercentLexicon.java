@@ -4,11 +4,14 @@ import ch.bfh.bti7535.w2017.groupname.filter.PreprocessingFilter;
 import ch.bfh.bti7535.w2017.groupname.filter.SentimentLexiconPercentFilter;
 import ch.bfh.bti7535.w2017.groupname.io.ArffResourceInputProvider;
 import ch.bfh.bti7535.w2017.groupname.io.ArffTempFileOutputProvider;
-import weka.core.Instances;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * ChainConfiguration zur Anwendung des SentimentLexiconPercentFilter's. Die entsprechenden Daten werden
+ * anschliessend im User-Home gespeichert
+ */
 public class ChainConfigSentimentPercentLexicon implements ProcessChainConfiguration {
 
     private List<ProcessStep> steps = new ArrayList<>();
@@ -18,8 +21,6 @@ public class ChainConfigSentimentPercentLexicon implements ProcessChainConfigura
         addStep((ProcessStep) new ArffResourceInputProvider().setSource("/movie_reviews_raw.arff"));
         addStep(new PreprocessingFilter());
         addStep(new SentimentLexiconPercentFilter());
-        //addStep((ProcessStep) new SentimentLexiconProvider().setSource("/temp/movie-sa/"));
-        //addStep(new InstancesLogger());
         addStep((ProcessStep) new ArffTempFileOutputProvider().setSource("/temp/movie-sa/"));
     }
 
@@ -31,10 +32,5 @@ public class ChainConfigSentimentPercentLexicon implements ProcessChainConfigura
     @Override
     public List<ProcessStep> getSteps() {
         return steps;
-    }
-
-    @Override
-    public Instances getResultSet() {
-        return steps.get(steps.size() - 1).getResultDataSet();
     }
 }

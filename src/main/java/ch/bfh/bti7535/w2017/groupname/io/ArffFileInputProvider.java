@@ -4,14 +4,13 @@ import ch.bfh.bti7535.w2017.groupname.process.ProcessStep;
 import weka.core.Instances;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
+/**
+ * Liefert die Inhalte einer Arff-Datei als Instances zurück
+ */
 public class ArffFileInputProvider implements DataProvider, ProcessStep{
-
-
-    public static final String ARFF_FILE_ENDING = ".arff";
 
     private Instances dataSet;
     String destPath;
@@ -42,6 +41,11 @@ public class ArffFileInputProvider implements DataProvider, ProcessStep{
         return dataSet;
     }
 
+    /**
+     * Liest die Instancen aus dem File
+     *
+     * @return
+     */
     private Instances loadInstancesFromFile(){
         Instances data = null;
 
@@ -59,8 +63,11 @@ public class ArffFileInputProvider implements DataProvider, ProcessStep{
         return data;
     }
 
-    private String composeFileName(){
-        //String filename = "movie_sa_temp_1513615918865";
-        return System.getProperty("user.home") + destPath /*+filename+ ARFF_FILE_ENDING*/;
+    /**
+     * Gibt den zusammengesetzten Filenamen zurück
+     * @return
+     */
+    private String composeFileName() {
+        return System.getProperty("user.home") + destPath;
     }
 }

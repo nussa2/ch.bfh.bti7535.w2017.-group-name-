@@ -8,6 +8,9 @@ import weka.core.SelectedTag;
 import weka.filters.Filter;
 import weka.filters.supervised.attribute.AttributeSelection;
 
+/**
+ * Filter zur Auswahl der Klassen-Korrelation zuträglichsten Wörter
+ */
 public class AttributeSelectionFilter implements ProcessStep {
 
     AttributeSelection attributeSelection = new AttributeSelection();
@@ -18,21 +21,24 @@ public class AttributeSelectionFilter implements ProcessStep {
 
     @Override
     public void init() {
+        // Konfiguration des cfsSubsetEval
         cfsSubsetEval.setPoolSize(8);
         cfsSubsetEval.setNumThreads(8);
         cfsSubsetEval.setDebug(true);
-        bestFirstSearch.setDirection(new SelectedTag("Forward",BestFirst.TAGS_SELECTION));
-        bestFirstSearch.setLookupCacheSize(4);
 
+        // Konfiguration des bestFirstSearch
+        bestFirstSearch.setDirection(new SelectedTag("Forward", BestFirst.TAGS_SELECTION));
+        bestFirstSearch.setLookupCacheSize(4);
         try {
             bestFirstSearch.setSearchTermination(5);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
+        // Konfiguration der AttributeSelection
         attributeSelection.setEvaluator(cfsSubsetEval);
         attributeSelection.setSearch(bestFirstSearch);
-        System.out.println("init attribute selection: "+attributeSelection.toString());
+        System.out.println("init attribute selection: " + attributeSelection.toString());
     }
 
     @Override
@@ -40,7 +46,6 @@ public class AttributeSelectionFilter implements ProcessStep {
         System.out.println("started attribute selection..");
         try {
             attributeSelection.setInputFormat(dataset);
-            //stringToWordVector.input()
             resultset = Filter.useFilter(dataset, attributeSelection);
         } catch (Exception e) {
             e.printStackTrace();

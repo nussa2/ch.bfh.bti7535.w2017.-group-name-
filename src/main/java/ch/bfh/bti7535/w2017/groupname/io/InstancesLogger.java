@@ -5,10 +5,18 @@ import weka.core.Instances;
 
 import java.util.Enumeration;
 
+/**
+ * Klasse zum Loggen von Instances
+ */
 public class InstancesLogger implements DataProvider, ProcessStep {
 
     private Instances dataSet;
 
+    /**
+     * Schreibt die übergebenen Instances ins System.out
+     *
+     * @param instances
+     */
     private static void logInstanceInfo(Instances instances){
         System.out.println("summary: "+instances.toSummaryString());
 
@@ -37,7 +45,7 @@ public class InstancesLogger implements DataProvider, ProcessStep {
     }
 
     @Override
-    public void process() throws Exception {
+    public void process() {
         InstancesLogger.logInstanceInfo(dataSet);
     }
 
