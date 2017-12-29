@@ -30,8 +30,8 @@ public class PreprocessingFilter implements ProcessStep {
     }
 
     public void init() {
-        stringToWordVector.setIDFTransform(false);
-        stringToWordVector.setTFTransform(false);
+        stringToWordVector.setIDFTransform(true);
+        stringToWordVector.setTFTransform(true);
         //stringToWordVector.setAttributeIndices("first");
         int[] array ={0};
         stringToWordVector.setAttributeIndicesArray(array);
@@ -39,12 +39,12 @@ public class PreprocessingFilter implements ProcessStep {
         //stringToWordVector.setNormalizeDocLength(new SelectedTag());
         stringToWordVector.setInvertSelection(false);
         stringToWordVector.setLowerCaseTokens(true);
-        stringToWordVector.setMinTermFreq(1);
+        stringToWordVector.setMinTermFreq(5);
         stringToWordVector.setOutputWordCounts(true);
-        //stringToWordVector.setPeriodicPruning(-1.0);
+        stringToWordVector.setPeriodicPruning(-1.0);
         //stringToWordVector.setStemmer(stemmer);
         stringToWordVector.setStopwordsHandler(new Rainbow());
-        stringToWordVector.setWordsToKeep(4000);
+        stringToWordVector.setWordsToKeep(10000);
         wordTokenizer.setDelimiters(" /\r\n\t.,;:\'\"()?!&#*+=_-<>`˜~|");
         stringToWordVector.setTokenizer(wordTokenizer);
         System.out.println("init preprocessing: "+stringToWordVector.toString());

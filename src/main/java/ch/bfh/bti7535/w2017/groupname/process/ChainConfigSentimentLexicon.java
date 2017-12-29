@@ -1,5 +1,6 @@
 package ch.bfh.bti7535.w2017.groupname.process;
 
+import ch.bfh.bti7535.w2017.groupname.filter.AttributeSelectionFilter;
 import ch.bfh.bti7535.w2017.groupname.filter.PreprocessingFilter;
 import ch.bfh.bti7535.w2017.groupname.filter.SentimentLexiconFilter;
 import ch.bfh.bti7535.w2017.groupname.io.ArffResourceInputProvider;
@@ -20,6 +21,7 @@ public class ChainConfigSentimentLexicon implements ProcessChainConfiguration {
         addStep((ProcessStep) new ArffResourceInputProvider().setSource("/movie_reviews_raw.arff"));
         addStep(new PreprocessingFilter());
         addStep(new SentimentLexiconFilter());
+        addStep(new AttributeSelectionFilter());
         //addStep((ProcessStep) new SentimentLexiconProvider().setSource("/temp/movie-sa/"));
         //addStep(new InstancesLogger());
         addStep((ProcessStep) new ArffTempFileOutputProvider().setSource("/temp/movie-sa/"));

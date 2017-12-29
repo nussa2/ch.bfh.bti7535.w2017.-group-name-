@@ -22,7 +22,11 @@ public class SentimentLexiconFilter implements ProcessStep {
     @Override
     public void init() {
         lexicon = new SentimentLexiconProvider().loadSentimentLexicon();
-        addWantedAttributes("Positiv", "Negativ");
+        //addWantedAttributes("Positiv", "Negativ");
+        addWantedAttributes("Positiv", "Negativ", "Pstv", "Affil", "Ngtv", "Hostile", "Strong", "Power", "Weak", "Submit",
+                "Active", "Passive", "Pleasur", "Pain", "Feel", "Arousal", "EMOT", "Virtue", "Vice", "Ovrst", "Undrst",
+                "Academ", "Doctrin", "Yes", "No", "Quality");
+
         /*addWantedAttributes("Positiv", "Negativ", "Pstv", "Affil", "Ngtv", "Hostile", "Strong", "Power", "Weak", "Submit",
                 "Active", "Passive", "Pleasur", "Pain", "Feel", "Arousal", "EMOT", "Virtue", "Vice", "Ovrst", "Undrst",
                 "Academ", "Doctrin", "Econ@", "Exch", "ECON", "Exprsv", "Legal", "Milit", "Polit@", "POLIT", "Relig",
