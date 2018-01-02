@@ -16,7 +16,6 @@ public class SentimentLexiconWeightedFilter implements ProcessStep {
     private Instances dataSet;
     private Instances resultSet;
     private List<SentimentLexiconEntry> lexicon;
-    private List<String> wantedAttributes = new ArrayList<>();
     private Map<String, Double> weightedAttributes = new HashMap<>();
 
     @Override
@@ -27,15 +26,15 @@ public class SentimentLexiconWeightedFilter implements ProcessStep {
                 "Active", "Passive", "Pleasur", "Pain", "Feel", "Arousal", "EMOT", "Virtue", "Vice", "Ovrst", "Undrst",
                 "Academ", "Doctrin", "Yes", "No", "Quality");*/
 
-        addAttr("Positiv", 1.0);
-        addAttr("Negativ", 1.0);
+        addAttr("Positiv", 1.5);
+        addAttr("Negativ", 1.5);
         addAttr("Pstv", 0.0);
         addAttr("Affil", 0.0);
         addAttr("Ngtv", 0.0);
-        addAttr("Hostile", 0.0);
-        addAttr("Strong", 1.0);
+        addAttr("Hostile", 1.0);
+        addAttr("Strong", 0.0);
         addAttr("Power", 0.0);
-        addAttr("Weak", 1.0);
+        addAttr("Weak", 0.0);
         addAttr("Submit", 0.0);
         addAttr("Active", 0.0);
         addAttr("Passive", 0.0);
@@ -215,17 +214,33 @@ public class SentimentLexiconWeightedFilter implements ProcessStep {
 
     @Override
     public void process() throws Exception {
-        InstanceBuilder instanceBuilder = initInstanceBuilder();
+
+        Enumeration<Attribute> attributes = dataSet.enumerateAttributes();
+        List<String> attributeList = new ArrayList<>();
+        while (attributes.hasMoreElements()){
+            String attribute = attributes.nextElement().name();
+            attributeList.add(attribute);
+        }
+
+        InstanceBuilder instanceBuilder = initInstanceBuilder(attributeList);
 
         Enumeration<Instance> instances = dataSet.enumerateInstances();
-
         while (instances.hasMoreElements()) {
             Instance instance = instances.nextElement();
             Map<String,Double> wordlist = extractWordlist(instance);
 
             Map<String,Double> resultList = weightWordlistAgainstSentimentLexicon(wordlist);
+
             List<Object> values = new ArrayList<>();
-            values.addAll(resultList.values());
+            for (String attribute: attributeList) {
+                Double weight = resultList.get(attribute);
+                if (weight != null){
+                    values.add(weight);
+                } else {
+                    values.add(0.0);
+                }
+            }
+            //values.addAll(resultList.values());
             values.add(dataSet.classAttribute().value((int) instance.classValue()));
 
             instanceBuilder.addData(values);
@@ -236,11 +251,11 @@ public class SentimentLexiconWeightedFilter implements ProcessStep {
         resultSet = newInstances;
     }
 
-    private InstanceBuilder initInstanceBuilder(){
+    private InstanceBuilder initInstanceBuilder(List<String> attributes){
         InstanceBuilder instanceBuilder = new InstanceBuilder();
         try {
             instanceBuilder.setRelationName("sentiment_lexicon_based_relation");
-            for (String attribute:wantedAttributes) {
+            for (String attribute:attributes) {
                 instanceBuilder.addNumericAttribute(attribute);
             }
             instanceBuilder.addNominalAttribute("review_class", "ndef", "neg", "pos");
@@ -254,7 +269,6 @@ public class SentimentLexiconWeightedFilter implements ProcessStep {
 
     private Map<String,Double> extractWordlist(Instance instance){
         //System.out.println("Instance to check against lexicon: "+instance);
-        //instance.value
         Map<String,Double> wordlist = new HashMap<>();
         for (int i = 1; i < instance.numValues(); i++) {
             int attrIndex = instance.index(i);
@@ -279,52 +293,50 @@ public class SentimentLexiconWeightedFilter implements ProcessStep {
 
     private Map<String, Double> weightWordlistAgainstSentimentLexicon(Map<String,Double> wordlist) {
         Map<String, Double> weightedWordlist = new HashMap<>();
-        //List<String> indexer = new ArrayList<>();
-
-        for (String attribute : weightedAttributes.keySet()) {
-            weightedWordlist.put(attribute, 0.0);
-            //indexer.add(attribute);
-        }
 
         for (String word : wordlist.keySet()) {
-            List<String> attributes = findWordAttributes(word);
-            if (attributes == null) {
-                continue;
-            }
-            for (String attribute : attributes) {
-                if (weightedWordlist.containsKey(attribute)) {
-                    Double oldValue = weightedWordlist.get(attribute);
-                    weightedWordlist.put(attribute, oldValue+wordlist.get(word));
-                    //System.out.println("word "+word+" is "+attribute);
-                }
-            }
-        }
-        //Map<String, Double> attributeValues = calculateAttributeValues(counter);
-        //System.out.println("attributeValues = " + counter);
-
-        /*Instance newInstance = new DenseInstance(attributeValues.size());
-        for (String attribute : attributeValues.keySet()) {
-            int index = indexer.indexOf(attribute);
-            newInstance.setValue(index, attributeValues.get(attribute));
+            weightedWordlist.put(word, calculateWeightedWordCount(word,wordlist.get(word)));
         }
 
-        System.out.println("inst = " + newInstance);*/
         return weightedWordlist;
     }
 
-
-
-    /*private Map<String, Double> calculateAttributeValues(Map<String, Double> counter) {
-        Map<String, Double> result = new HashMap<>();
-        for (String s : counter.keySet()) {
-            result.put(s, (counter.get(s)));
+    private double calculateWeightedWordCount(String word, double wordCount){
+        if (wordCount == 0.0){
+            return 0.0;
         }
-        return result;
-    }*/
+        double weightedWordCount = 0.0;
+
+        List<String> attributes = findWordAttributes(word);
+        if (attributes == null) {
+            return 0.0;
+        }
+
+        for (String attribute : attributes) {
+            double attributeWeight = getAttrWeight(attribute);
+                if (attributeWeight > 0.0){
+                    if (weightedWordCount == 0.0){
+                        weightedWordCount = wordCount;
+                    }
+                    weightedWordCount = weightedWordCount*attributeWeight;
+                }
+                //System.out.println("word "+word+" has new weight "+attributeWeight);
+            }
+
+        return weightedWordCount;
+    }
 
     private void addAttr(String attribute, Double weight) {
         this.weightedAttributes.put(attribute, weight);
-        System.out.println("Add weighted attribute: " + attribute + ": "+weight);
+        //System.out.println("Add weighted attribute: " + attribute + ": "+weight);
+    }
+
+    private double getAttrWeight(String attribute) {
+        Double attributeWeight = weightedAttributes.get(attribute);
+        if (attributeWeight == null) {
+            return 0.0;
+        }
+        return attributeWeight;
     }
 
     private List<String> findWordAttributes(String word) {

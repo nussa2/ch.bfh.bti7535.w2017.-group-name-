@@ -18,10 +18,10 @@ public class PreprocessingFilter implements ProcessStep {
     Instances dataset, resultset;
 
     public void init() {
-        // Konfiguration des StringToWordVector
-        stringToWordVector.setIDFTransform(true);
-        stringToWordVector.setTFTransform(true);
-        int[] array = {0};
+        stringToWordVector.setIDFTransform(false);
+        stringToWordVector.setTFTransform(false);
+        //stringToWordVector.setAttributeIndices("first");
+        int[] array ={0};
         stringToWordVector.setAttributeIndicesArray(array);
         stringToWordVector.setDoNotOperateOnPerClassBasis(false);
         stringToWordVector.setInvertSelection(false);

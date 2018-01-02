@@ -123,6 +123,32 @@ public class InstanceBuilder {
     }
 
     /**
+     * Hinzufügen der Daten für interne Verwendung
+     */
+    private void addRelData() {
+        for (List<Object> values:rawData) {
+
+            double[] vals = new double [attributes.size()];
+
+
+            int i = 0;
+            for (Object value: values) {
+                if (value instanceof Double || value instanceof Integer){
+                    vals[i] = (double) value;
+                } else if(checkIfNomAttrContainsValue(dataSet.attribute(i),value)){
+                    vals[i] = dataSet.attribute(i).indexOfValue((String) value);
+                } else {
+                    dataSet.attribute(i).addStringValue(value.toString());
+                }
+                i++;
+            }
+            DenseInstance denseInstance = new DenseInstance(1.0, vals);
+            //denseInstance.setValueSparse();
+            dataSet.add(new DenseInstance(1.0, vals));
+        }
+    }
+
+    /**
      * Überprüft, ob das Nominale Attribut auch ein Value enthält
      * @param attribute
      * @param value

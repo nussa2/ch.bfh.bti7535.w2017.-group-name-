@@ -26,6 +26,11 @@ public class App {
                     ChainConfigSentimentPercentLexicon sentimentLexiconPercentChain = new ChainConfigSentimentPercentLexicon();
                     new DefaultChainProcessor().process(sentimentLexiconPercentChain);
                     break;
+                case "PP_SentimentLexiconWeight":
+                    //
+                    ChainConfigSentimentWeightLexicon sentimentLexiconWeightedChain = new ChainConfigSentimentWeightLexicon();
+                    new DefaultChainProcessor().process(sentimentLexiconWeightedChain);
+                    break;
                 case "PP_AttributeSelection":
                     // Erfolgsquote: 78.3%
                     ChainConfigVectorAttSelect vectorASChain = new ChainConfigVectorAttSelect();
