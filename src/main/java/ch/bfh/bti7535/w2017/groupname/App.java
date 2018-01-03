@@ -1,6 +1,7 @@
 package ch.bfh.bti7535.w2017.groupname;
 
 import ch.bfh.bti7535.w2017.groupname.console.Console;
+import ch.bfh.bti7535.w2017.groupname.console.NoFilesGeneratedException;
 import ch.bfh.bti7535.w2017.groupname.console.Option;
 import ch.bfh.bti7535.w2017.groupname.process.*;
 import java.io.File;
@@ -61,18 +62,20 @@ public class App {
         console.addOption(new Option("Validate", () -> {
             try {
                 String filePath = Console.selectFile("/temp/movie-sa");
-                
+
                 ChainConfigCVNB filterChain = new ChainConfigCVNB();
                 filterChain.setFilePath(filePath);
                 CVEvaluationChainProcessor cvEvaluationChainProcessor = new CVEvaluationChainProcessor();
                 cvEvaluationChainProcessor.process(filterChain);
                 System.out.println("Error Rate: " + cvEvaluationChainProcessor.getValidationResultErrorRate());
-                
+
+            } catch (NoFilesGeneratedException e) {
+                System.out.println("No files found! Have you generated some files yet?");
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }));
-        
+
         console.addOption(new Option("Exit", "Leave the program", () -> {
             System.exit(0);
         }));

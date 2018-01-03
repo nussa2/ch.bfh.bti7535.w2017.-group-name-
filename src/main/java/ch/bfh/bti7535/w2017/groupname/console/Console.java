@@ -8,6 +8,7 @@ package ch.bfh.bti7535.w2017.groupname.console;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -27,7 +28,7 @@ public class Console {
      *
      * @return
      */
-    public static String selectFile(String path) {
+    public static String selectFile(String path) throws NoFilesGeneratedException {
 
         ArrayList<String> folderList = new ArrayList<>();
 
@@ -37,6 +38,8 @@ public class Console {
                     .forEach((p) -> {
                         folderList.add(p.toString().replace(System.getProperty("user.home"), ""));
                     });
+        } catch (NoSuchFileException e) {
+            throw new NoFilesGeneratedException();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -48,7 +51,7 @@ public class Console {
         String file = "";
 
         System.out.println();
-        
+
         folderList.forEach((f) -> {
             System.out.println(folderList.indexOf(f) + " " + f);
         });
@@ -86,6 +89,7 @@ public class Console {
         System.out.println("             |  \\  /\\   |   /\\    (_  | |_  |\\ | /   |_ ");
         System.out.println("             |__/ /--\\  |  /--\\   __) | |__ | \\| \\__ |__");
         System.out.println("             ");
+        System.out.println("                  Welcome to our Data Science Project.");
         System.out.println("------------------------------------------------------------------------");
     }
 
@@ -118,7 +122,7 @@ public class Console {
     }
 
     private void printMessage() {
-        System.out.println("\nWelcome to our Data Science Project. Please choose an option.\n");
+        System.out.println("\nPlease choose an option.\n");
     }
 
     /**
