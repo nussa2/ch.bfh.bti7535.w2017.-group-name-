@@ -10,8 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
- * @author nalet
+ * ChainConfig, welche eine Validation konfiguriert.
  */
 public class ChainConfigCVNB implements ProcessChainConfiguration {
 

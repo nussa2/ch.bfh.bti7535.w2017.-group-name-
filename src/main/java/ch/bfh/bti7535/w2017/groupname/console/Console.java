@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ch.bfh.bti7535.w2017.groupname.console;
 
 import java.io.File;
@@ -18,8 +13,7 @@ import java.util.logging.Logger;
 import java.util.stream.Stream;
 
 /**
- *
- * @author nalet
+ * Ausgabe des Console's Interfaces
  */
 public class Console {
 
@@ -42,6 +36,10 @@ public class Console {
             throw new NoFilesGeneratedException();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+        
+        if(folderList.size() == 0) {
+            throw new NoFilesGeneratedException();
         }
 
         return Console.listFilesInFolder(folderList);
@@ -95,7 +93,7 @@ public class Console {
     }
 
     /**
-     *
+     * Ausgabe der Console 
      */
     public void printAndWait() {
         this.printTitle();

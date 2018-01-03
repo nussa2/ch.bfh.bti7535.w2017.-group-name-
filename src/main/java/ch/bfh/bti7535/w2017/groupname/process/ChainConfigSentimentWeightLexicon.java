@@ -1,18 +1,15 @@
 package ch.bfh.bti7535.w2017.groupname.process;
 
 import ch.bfh.bti7535.w2017.groupname.filter.PreprocessingFilter;
-import ch.bfh.bti7535.w2017.groupname.filter.SentimentLexiconPercentFilter;
 import ch.bfh.bti7535.w2017.groupname.filter.SentimentLexiconWeightedFilter;
 import ch.bfh.bti7535.w2017.groupname.io.ArffResourceInputProvider;
 import ch.bfh.bti7535.w2017.groupname.io.ArffTempFileOutputProvider;
-import weka.core.Instances;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
- * @author nalet
+ * 
  */
 public class ChainConfigSentimentWeightLexicon implements ProcessChainConfiguration {
 

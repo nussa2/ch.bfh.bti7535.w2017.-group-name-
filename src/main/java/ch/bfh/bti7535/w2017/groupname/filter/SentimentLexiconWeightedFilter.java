@@ -12,8 +12,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- *
- * @author nalet
+ * Filter zum Klassifizieren mit dem General Inquirer von Harward.
+ * Mit Gewichtung.
  */
 public class SentimentLexiconWeightedFilter implements ProcessStep {
 

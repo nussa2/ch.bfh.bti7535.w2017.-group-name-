@@ -12,8 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
- * @author nalet
+ * ChainConfig für Sentiment Attributselektion.
  */
 public class ChainConfigSentimentAttrSelCVNB implements ProcessChainConfiguration {
 

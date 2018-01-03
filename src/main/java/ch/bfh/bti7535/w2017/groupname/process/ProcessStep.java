@@ -8,7 +8,7 @@ import weka.core.Instances;
 public interface ProcessStep {
 
     /**
-     *
+     * 
      */
     void init();
 

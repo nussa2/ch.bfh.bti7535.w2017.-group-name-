@@ -13,7 +13,7 @@ public class NBClassifier implements ClassifierStep {
     Instances trainset;
 
     /**
-     *
+     * 
      */
     @Override
     public void init() {

@@ -5,6 +5,7 @@ import ch.bfh.bti7535.w2017.groupname.console.NoFilesGeneratedException;
 import ch.bfh.bti7535.w2017.groupname.console.Option;
 import ch.bfh.bti7535.w2017.groupname.process.*;
 import java.io.File;
+import java.time.Instant;
 
 /**
  * Hello world!
@@ -20,7 +21,7 @@ public class App {
         Console.clear();
         Console console = new Console();
 
-        console.addOption(new Option("PP_SentimentLexiconCount", () -> {
+        console.addOption(new Option("PP_SentimentLexiconCount", "Create Sentiment", () -> {
             try {
                 // Erfolgsquote: 63.4%
                 ChainConfigSentimentLexicon sentimentLexiconChain = new ChainConfigSentimentLexicon();
@@ -28,9 +29,10 @@ public class App {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            System.out.println("Finished PP_SentimentLexiconCount at " + Instant.now().toEpochMilli());
         }));
 
-        console.addOption(new Option("PP_SentimentLexiconPercent", () -> {
+        console.addOption(new Option("PP_SentimentLexiconPercent", "Create sentiment", () -> {
             try {
                 // Erfolgsquote: 63.5%
                 ChainConfigSentimentPercentLexicon sentimentLexiconPercentChain = new ChainConfigSentimentPercentLexicon();
@@ -38,18 +40,20 @@ public class App {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            System.out.println("Finished PP_SentimentLexiconPercent at " + Instant.now().toEpochMilli());
         }));
 
-        console.addOption(new Option("PP_SentimentLexiconWeight", () -> {
+        console.addOption(new Option("PP_SentimentLexiconWeight", "Create sentiment", () -> {
             try {
                 ChainConfigSentimentWeightLexicon sentimentLexiconWeightedChain = new ChainConfigSentimentWeightLexicon();
                 new DefaultChainProcessor().process(sentimentLexiconWeightedChain);
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            System.out.println("Finished  at " + Instant.now().toEpochMilli());
         }));
 
-        console.addOption(new Option("PP_AttributeSelection", () -> {
+        console.addOption(new Option("PP_AttributeSelection", "Create sentiment", () -> {
             try {
                 // Erfolgsquote: 78.3%
                 ChainConfigVectorAttSelect vectorASChain = new ChainConfigVectorAttSelect();
@@ -57,9 +61,10 @@ public class App {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            System.out.println("Finished PP_AttributeSelection at " + Instant.now().toEpochMilli());
         }));
 
-        console.addOption(new Option("Validate", () -> {
+        console.addOption(new Option("Validate", "Validate the created Sentiments", () -> {
             try {
                 String filePath = Console.selectFile("/temp/movie-sa");
 
@@ -74,6 +79,7 @@ public class App {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            System.out.println("Finished Validate at " + Instant.now().toEpochMilli());
         }));
 
         console.addOption(new Option("Exit", "Leave the program", () -> {
