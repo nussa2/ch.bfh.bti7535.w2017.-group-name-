@@ -85,9 +85,10 @@ public class Console {
 
     private void printTitle() {
         System.out.println("------------------------------------------------------------------------");
-        System.out.println("              __       ___         __    __       __  __ ");
-        System.out.println("             |  \\  /\\   |   /\\    (_  | |_  |\\ | /   |_ ");
-        System.out.println("             |__/ /--\\  |  /--\\   __) | |__ | \\| \\__ |__");
+        System.out.println("              ___   _ _____ _     ___  ___ ___ ___ _  _  ___ ___ ");
+        System.out.println("             |   \\ /_\\_   _/_\\   / __|/ __|_ _| __| \\| |/ __| __|");
+        System.out.println("             | |) / _ \\| |/ _ \\  \\__ \\ (__ | || _|| .` | (__| _| ");
+        System.out.println("             |___/_/ \\_\\_/_/ \\_\\ |___/\\___|___|___|_|\\_|\\___|___|");
         System.out.println("             ");
         System.out.println("                  Welcome to our Data Science Project.");
         System.out.println("------------------------------------------------------------------------");
