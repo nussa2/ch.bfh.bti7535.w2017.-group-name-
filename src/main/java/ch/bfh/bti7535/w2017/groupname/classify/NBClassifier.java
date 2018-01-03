@@ -12,22 +12,36 @@ public class NBClassifier implements ClassifierStep {
     NaiveBayes naiveBayes = new NaiveBayes();
     Instances trainset;
 
-
+    /**
+     *
+     */
     @Override
     public void init() {
         // no implementation
     }
 
+    /**
+     *
+     * @throws Exception
+     */
     @Override
     public void process() throws Exception {
         train();
     }
 
+    /**
+     *
+     * @param dataSet
+     */
     @Override
     public void setInitDataSet(Instances dataSet) {
         trainset = dataSet;
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public Instances getResultDataSet() {
         return trainset;

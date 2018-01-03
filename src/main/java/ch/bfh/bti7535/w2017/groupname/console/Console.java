@@ -10,6 +10,10 @@ package ch.bfh.bti7535.w2017.groupname.console;
  * @author nalet
  */
 public class Console {
+
+    /**
+     *
+     */
     public Console() {
         
     }

@@ -39,26 +39,45 @@ public class InstancesLogger implements DataProvider, ProcessStep {
         System.out.println(instances.get(1012).classValue());
     }
 
+    /**
+     *
+     */
     @Override
     public void init() {
 
     }
 
+    /**
+     *
+     */
     @Override
     public void process() {
         InstancesLogger.logInstanceInfo(dataSet);
     }
 
+    /**
+     *
+     * @param dataSet
+     */
     @Override
     public void setInitDataSet(Instances dataSet) {
         this.dataSet = dataSet;
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public Instances getResultDataSet() {
         return dataSet;
     }
 
+    /**
+     *
+     * @param source
+     * @return
+     */
     @Override
     public DataProvider setSource(String source) {
         return this;

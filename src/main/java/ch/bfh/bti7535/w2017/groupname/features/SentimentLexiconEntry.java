@@ -11,18 +11,34 @@ public class SentimentLexiconEntry {
     private String word;
     private List<String> sentiments = new ArrayList<>();
 
+    /**
+     *
+     * @param word
+     */
     public SentimentLexiconEntry(String word) {
         this.word = word;
     }
 
+    /**
+     *
+     * @return
+     */
     public List<String> getSentiments() {
         return sentiments;
     }
 
+    /**
+     *
+     * @param sentiment
+     */
     public void addSentiment(String sentiment){
         sentiments.add(sentiment);
     }
 
+    /**
+     *
+     * @return
+     */
     public String getWord() {
         return word;
     }

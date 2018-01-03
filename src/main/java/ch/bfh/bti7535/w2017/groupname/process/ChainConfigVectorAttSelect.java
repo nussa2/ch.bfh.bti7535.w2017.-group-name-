@@ -17,6 +17,9 @@ public class ChainConfigVectorAttSelect implements ProcessChainConfiguration {
 
     private List<ProcessStep> steps = new ArrayList<>();
 
+    /**
+     *
+     */
     @Override
     public void init() {
         addStep((ProcessStep) new ArffResourceInputProvider().setSource("/movie_reviews_raw.arff"));
@@ -26,11 +29,19 @@ public class ChainConfigVectorAttSelect implements ProcessChainConfiguration {
         addStep((ProcessStep) new ArffTempFileOutputProvider().setSource("/temp/movie-sa/"));
     }
 
+    /**
+     *
+     * @param processStep
+     */
     @Override
     public void addStep(ProcessStep processStep) {
         steps.add(processStep);
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public List<ProcessStep> getSteps() {
         return steps;

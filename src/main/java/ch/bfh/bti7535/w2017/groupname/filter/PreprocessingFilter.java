@@ -17,6 +17,9 @@ public class PreprocessingFilter implements ProcessStep {
 
     Instances dataset, resultset;
 
+    /**
+     *
+     */
     public void init() {
         stringToWordVector.setIDFTransform(false);
         stringToWordVector.setTFTransform(false);
@@ -36,6 +39,9 @@ public class PreprocessingFilter implements ProcessStep {
         System.out.println("init preprocessing: " + stringToWordVector.toString());
     }
 
+    /**
+     *
+     */
     @Override
     public void process() {
         System.out.println("started preprocessing..");
@@ -47,11 +53,19 @@ public class PreprocessingFilter implements ProcessStep {
         }
     }
 
+    /**
+     *
+     * @param dataSet
+     */
     @Override
     public void setInitDataSet(Instances dataSet) {
         this.dataset = dataSet;
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public Instances getResultDataSet() {
         return resultset;

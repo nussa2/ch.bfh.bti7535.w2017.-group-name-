@@ -15,27 +15,47 @@ public class ArffFileInputProvider implements DataProvider, ProcessStep{
     private Instances dataSet;
     String destPath;
 
+    /**
+     *
+     * @param source
+     * @return
+     */
     @Override
     public DataProvider setSource(String source) {
         destPath = source;
         return this;
     }
 
+    /**
+     *
+     */
     @Override
     public void init() {
 
     }
 
+    /**
+     *
+     * @throws Exception
+     */
     @Override
     public void process() throws Exception {
         dataSet = loadInstancesFromFile();
     }
 
+    /**
+     *
+     * @param dataSet
+     */
     @Override
     public void setInitDataSet(Instances dataSet) {
         this.dataSet = dataSet;
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public Instances getResultDataSet() {
         return dataSet;

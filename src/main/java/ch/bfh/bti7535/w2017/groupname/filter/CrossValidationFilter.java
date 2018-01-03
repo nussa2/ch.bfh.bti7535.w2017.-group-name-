@@ -11,15 +11,25 @@ import java.util.Random;
 public class CrossValidationFilter implements ProcessStep {
 
     int seed = 5;
+
+    /**
+     *
+     */
     public static int FOLDS = 10;
 
     Instances dataset, resultset;
 
+    /**
+     *
+     */
     @Override
     public void init() {
 
     }
 
+    /**
+     *
+     */
     @Override
     public void process() {
         // Seeded Number Generator erstellen
@@ -30,11 +40,19 @@ public class CrossValidationFilter implements ProcessStep {
         resultset.stratify(FOLDS);
     }
 
+    /**
+     *
+     * @param dataSet
+     */
     @Override
     public void setInitDataSet(Instances dataSet) {
         this.dataset = dataSet;
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public Instances getResultDataSet() {
         return resultset;

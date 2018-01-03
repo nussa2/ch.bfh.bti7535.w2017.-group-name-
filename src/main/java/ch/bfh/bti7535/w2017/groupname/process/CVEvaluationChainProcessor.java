@@ -107,6 +107,10 @@ public class CVEvaluationChainProcessor implements ChainProcessor {
         return evaluation.errorRate();
     }
 
+    /**
+     *
+     * @return
+     */
     public double getValidationResultErrorRate() {
         return validationResultErrorRate;
     }

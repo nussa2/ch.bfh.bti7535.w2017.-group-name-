@@ -20,6 +20,9 @@ public class InstanceBuilder {
     private boolean setClassIndex = false;
     private List<List<Object>> rawData = new ArrayList<>();
 
+    /**
+     *
+     */
     public InstanceBuilder() {
     }
 

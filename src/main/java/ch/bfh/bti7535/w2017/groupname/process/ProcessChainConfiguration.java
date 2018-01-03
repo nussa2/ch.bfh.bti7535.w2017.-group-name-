@@ -7,9 +7,20 @@ import java.util.List;
  */
 public interface ProcessChainConfiguration {
 
+    /**
+     *
+     */
     void init();
 
+    /**
+     *
+     * @param processStep
+     */
     void addStep(ProcessStep processStep);
 
+    /**
+     *
+     * @return
+     */
     List<ProcessStep> getSteps();
 }

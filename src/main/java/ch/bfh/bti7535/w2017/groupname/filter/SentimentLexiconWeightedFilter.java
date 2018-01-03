@@ -11,6 +11,10 @@ import weka.core.Instances;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ *
+ * @author nalet
+ */
 public class SentimentLexiconWeightedFilter implements ProcessStep {
 
     private Instances dataSet;
@@ -18,6 +22,9 @@ public class SentimentLexiconWeightedFilter implements ProcessStep {
     private List<SentimentLexiconEntry> lexicon;
     private Map<String, Double> weightedAttributes = new HashMap<>();
 
+    /**
+     *
+     */
     @Override
     public void init() {
         lexicon = new SentimentLexiconProvider().loadSentimentLexicon();
@@ -212,6 +219,10 @@ public class SentimentLexiconWeightedFilter implements ProcessStep {
         addAttr("Defined", 0.0);
     }
 
+    /**
+     *
+     * @throws Exception
+     */
     @Override
     public void process() throws Exception {
 
@@ -281,11 +292,19 @@ public class SentimentLexiconWeightedFilter implements ProcessStep {
         return wordlist;
     }
 
+    /**
+     *
+     * @param dataSet
+     */
     @Override
     public void setInitDataSet(Instances dataSet) {
         this.dataSet = dataSet;
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public Instances getResultDataSet() {
         return resultSet;

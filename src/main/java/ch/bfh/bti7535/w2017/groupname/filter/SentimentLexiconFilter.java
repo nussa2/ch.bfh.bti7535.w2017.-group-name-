@@ -21,6 +21,9 @@ public class SentimentLexiconFilter implements ProcessStep {
     private List<SentimentLexiconEntry> lexicon;
     private List<String> wantedAttributes = new ArrayList<>();
 
+    /**
+     *
+     */
     @Override
     public void init() {
         // Sentiment-Lexikon laden
@@ -51,6 +54,10 @@ public class SentimentLexiconFilter implements ProcessStep {
                 "Nation", "Anomie", "NegAff", "PosAff", "SureLw", "If", "NotLw", "TimeSpc", "FormLw", "Othtags", "Defined");*/
     }
 
+    /**
+     *
+     * @throws Exception
+     */
     @Override
     public void process() throws Exception {
         InstanceBuilder instanceBuilder = initInstanceBuilder();
@@ -112,11 +119,19 @@ public class SentimentLexiconFilter implements ProcessStep {
         return wordlist;
     }
 
+    /**
+     *
+     * @param dataSet
+     */
     @Override
     public void setInitDataSet(Instances dataSet) {
         this.dataSet = dataSet;
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public Instances getResultDataSet() {
         return resultSet;

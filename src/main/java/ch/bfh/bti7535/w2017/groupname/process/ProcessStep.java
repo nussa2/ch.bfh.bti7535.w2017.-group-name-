@@ -7,11 +7,26 @@ import weka.core.Instances;
  */
 public interface ProcessStep {
 
+    /**
+     *
+     */
     void init();
 
+    /**
+     *
+     * @throws Exception
+     */
     void process() throws Exception;
 
+    /**
+     *
+     * @param dataSet
+     */
     void setInitDataSet(Instances dataSet);
 
+    /**
+     *
+     * @return
+     */
     Instances getResultDataSet();
 }

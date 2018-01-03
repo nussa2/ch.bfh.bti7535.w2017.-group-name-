@@ -16,25 +16,44 @@ public class ArffResourceInputProvider implements DataProvider, ProcessStep {
 
     private Instances dataSet;
 
+    /**
+     *
+     * @param source
+     * @return
+     */
     @Override
     public DataProvider setSource(String source) {
         source_path = source;
         return this;
     }
 
+    /**
+     *
+     */
     @Override
     public void init() {
     }
 
+    /**
+     *
+     */
     @Override
     public void process() {
         dataSet = loadData();
     }
 
+    /**
+     *
+     * @param dataSet
+     */
     @Override
     public void setInitDataSet(Instances dataSet) {
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public Instances getResultDataSet() {
         return dataSet;

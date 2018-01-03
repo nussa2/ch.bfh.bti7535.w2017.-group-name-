@@ -19,6 +19,9 @@ public class AttributeSelectionFilter implements ProcessStep {
 
     Instances dataset, resultset;
 
+    /**
+     *
+     */
     @Override
     public void init() {
         // Konfiguration des cfsSubsetEval
@@ -41,6 +44,9 @@ public class AttributeSelectionFilter implements ProcessStep {
         System.out.println("init attribute selection: " + attributeSelection.toString());
     }
 
+    /**
+     *
+     */
     @Override
     public void process() {
         System.out.println("started attribute selection..");
@@ -52,11 +58,19 @@ public class AttributeSelectionFilter implements ProcessStep {
         }
     }
 
+    /**
+     *
+     * @param dataSet
+     */
     @Override
     public void setInitDataSet(Instances dataSet) {
         this.dataset = dataSet;
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public Instances getResultDataSet() {
         return resultset;

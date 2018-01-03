@@ -14,6 +14,9 @@ import java.util.List;
  */
 public class SentimentLexiconProvider {
 
+    /**
+     *
+     */
     public static final String INQUIRERBASIC_CSV = "inquirerbasic.CSV";
 
     /**

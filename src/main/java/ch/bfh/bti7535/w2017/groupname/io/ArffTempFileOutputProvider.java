@@ -13,26 +13,43 @@ import java.time.Instant;
  */
 public class ArffTempFileOutputProvider implements DataProvider, ProcessStep {
 
+    /**
+     *
+     */
     public static final String ARFF_FILE_ENDING = ".arff";
     ArffSaver saver = new ArffSaver();
     private Instances dataSet;
     String destPath;
 
+    /**
+     *
+     */
     @Override
     public void init() {
 
     }
 
+    /**
+     *
+     */
     @Override
     public void process() {
         saveData(dataSet);
     }
 
+    /**
+     *
+     * @param dataSet
+     */
     @Override
     public void setInitDataSet(Instances dataSet) {
         this.dataSet = dataSet;
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public Instances getResultDataSet() {
         return dataSet;
@@ -63,6 +80,11 @@ public class ArffTempFileOutputProvider implements DataProvider, ProcessStep {
         }
     }
 
+    /**
+     *
+     * @param source
+     * @return
+     */
     @Override
     public DataProvider setSource(String source) {
         this.destPath = source;
