@@ -3,8 +3,7 @@ package ch.bfh.bti7535.w2017.groupname;
 import ch.bfh.bti7535.w2017.groupname.console.Console;
 import ch.bfh.bti7535.w2017.groupname.console.Option;
 import ch.bfh.bti7535.w2017.groupname.process.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.io.File;
 
 /**
  * Hello world!
@@ -61,13 +60,14 @@ public class App {
 
         console.addOption(new Option("Validate", () -> {
             try {
-                /* Hier muss man noch ch.bfh.bti7535.w2017.groupname.process.ChainConfigCVNB.addStep
-                        anpassen, damit es das richtige input-file nimmt
-                 */
+                String filePath = Console.selectFile("/temp/movie-sa");
+                
                 ChainConfigCVNB filterChain = new ChainConfigCVNB();
+                filterChain.setFilePath(filePath);
                 CVEvaluationChainProcessor cvEvaluationChainProcessor = new CVEvaluationChainProcessor();
                 cvEvaluationChainProcessor.process(filterChain);
                 System.out.println("Error Rate: " + cvEvaluationChainProcessor.getValidationResultErrorRate());
+                
             } catch (Exception e) {
                 e.printStackTrace();
             }

@@ -5,8 +5,16 @@
  */
 package ch.bfh.bti7535.w2017.groupname.console;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.stream.Stream;
 
 /**
  *
@@ -15,10 +23,56 @@ import java.util.Scanner;
 public class Console {
 
     /**
+     * Gibt einen Pfad relativ zum User.Home aus.
+     *
+     * @return
+     */
+    public static String selectFile(String path) {
+
+        ArrayList<String> folderList = new ArrayList<>();
+
+        try (Stream<Path> paths = Files.walk(Paths.get(System.getProperty("user.home") + path))) {
+            paths
+                    .filter(Files::isRegularFile)
+                    .forEach((p) -> {
+                        folderList.add(p.toString().replace(System.getProperty("user.home"), ""));
+                    });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return Console.listFilesInFolder(folderList);
+    }
+
+    private static String listFilesInFolder(ArrayList<String> folderList) {
+        String file = "";
+
+        System.out.println();
+        
+        folderList.forEach((f) -> {
+            System.out.println(folderList.indexOf(f) + " " + f);
+        });
+
+        System.out.println("\nFileIndex:");
+
+        Scanner in = new Scanner(System.in);
+
+        try {
+            int i = in.nextInt();
+            file = folderList.get(i);
+        } catch (Exception e) {
+            System.out.println("Please enter a valid file index.");
+            file = Console.listFilesInFolder(folderList);
+        }
+
+        return file;
+    }
+
+    /**
      *
      */
     protected ArrayList<Option> options = new ArrayList<>();
-    
+
     /**
      *
      */
@@ -34,7 +88,7 @@ public class Console {
         System.out.println("             ");
         System.out.println("------------------------------------------------------------------------");
     }
-    
+
     /**
      *
      */
@@ -44,12 +98,12 @@ public class Console {
         this.printOptions();
         this.optionInput();
     }
-    
+
     private void optionInput() {
         System.out.println("\nOption:");
 
         Scanner in = new Scanner(System.in);
-        
+
         try {
             int i = in.nextInt();
             this.options.get(i).run();
@@ -57,7 +111,7 @@ public class Console {
             System.out.println("Please enter a valid option.");
             this.optionInput();
         }
-        
+
         this.printMessage();
         this.printOptions();
         this.optionInput();
@@ -66,7 +120,7 @@ public class Console {
     private void printMessage() {
         System.out.println("\nWelcome to our Data Science Project. Please choose an option.\n");
     }
-    
+
     /**
      *
      * @param option
@@ -80,4 +134,5 @@ public class Console {
             System.out.println(this.options.indexOf(o) + " " + o.getKey() + " | " + o.getDescription());
         });
     }
+
 }
