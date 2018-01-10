@@ -2,9 +2,7 @@ package ch.bfh.bti7535.w2017.groupname.filter;
 
 import ch.bfh.bti7535.w2017.groupname.process.ProcessStep;
 import weka.core.Instances;
-import weka.core.stemmers.IteratedLovinsStemmer;
 import weka.core.stopwords.Rainbow;
-import weka.core.tokenizers.NGramTokenizer;
 import weka.core.tokenizers.WordTokenizer;
 import weka.filters.Filter;
 import weka.filters.unsupervised.attribute.StringToWordVector;
@@ -12,11 +10,10 @@ import weka.filters.unsupervised.attribute.StringToWordVector;
 /**
  * Filter, welcher den Text vektorisiert
  */
-public class PreprocessingFilter implements ProcessStep {
+public class PreprocessingSimpleFilter implements ProcessStep {
 
     private StringToWordVector stringToWordVector = new StringToWordVector();
     private WordTokenizer wordTokenizer = new WordTokenizer();
-    private IteratedLovinsStemmer lovinsStemmer = new IteratedLovinsStemmer();
 
     Instances dataset, resultset;
 
@@ -24,22 +21,22 @@ public class PreprocessingFilter implements ProcessStep {
      *
      */
     public void init() {
-        stringToWordVector.setIDFTransform(true);
-        stringToWordVector.setTFTransform(true);
+        stringToWordVector.setWordsToKeep(4000);
+
+        wordTokenizer.setDelimiters(" /\r\n\t.,;:\'\"()?!&#*+=_-<>`˜~|");
+        stringToWordVector.setTokenizer(wordTokenizer);
+
+        stringToWordVector.setIDFTransform(false);
+        stringToWordVector.setTFTransform(false);
         stringToWordVector.setAttributeIndices("first-last");
         int[] array ={0};
         stringToWordVector.setAttributeIndicesArray(array);
         stringToWordVector.setDoNotOperateOnPerClassBasis(false);
         stringToWordVector.setInvertSelection(false);
         stringToWordVector.setLowerCaseTokens(true);
-        stringToWordVector.setMinTermFreq(1);
+        stringToWordVector.setMinTermFreq(2);
         stringToWordVector.setOutputWordCounts(true);
-        //stringToWordVector.setPeriodicPruning(-1.0);
-        stringToWordVector.setStopwordsHandler(new Rainbow());
-        stringToWordVector.setWordsToKeep(4000);
-        wordTokenizer.setDelimiters(" /\r\n\t.,;:\'\"()?!&#*+=_-<>`˜~|");
-        stringToWordVector.setTokenizer(wordTokenizer);
-        stringToWordVector.setStemmer(lovinsStemmer);
+
         System.out.println("init preprocessing: " + stringToWordVector.toString());
     }
 

@@ -36,6 +36,7 @@ public class CrossValidationFilter implements ProcessStep {
         Random rand = new Random(seed);
         // Orginaldaten kopieren
         resultset = new Instances(dataset);
+        //resultset.setClassIndex(0);
         resultset.randomize(rand);
         resultset.stratify(FOLDS);
     }

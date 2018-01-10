@@ -2,7 +2,6 @@ package ch.bfh.bti7535.w2017.groupname.filter;
 
 import ch.bfh.bti7535.w2017.groupname.process.ProcessStep;
 import weka.core.Instances;
-import weka.core.stemmers.IteratedLovinsStemmer;
 import weka.core.stopwords.Rainbow;
 import weka.core.tokenizers.NGramTokenizer;
 import weka.core.tokenizers.WordTokenizer;
@@ -12,11 +11,10 @@ import weka.filters.unsupervised.attribute.StringToWordVector;
 /**
  * Filter, welcher den Text vektorisiert
  */
-public class PreprocessingFilter implements ProcessStep {
+public class PreprocessingNGramFilter implements ProcessStep {
 
     private StringToWordVector stringToWordVector = new StringToWordVector();
-    private WordTokenizer wordTokenizer = new WordTokenizer();
-    private IteratedLovinsStemmer lovinsStemmer = new IteratedLovinsStemmer();
+    private NGramTokenizer nGramTokenizer = new NGramTokenizer();
 
     Instances dataset, resultset;
 
@@ -34,12 +32,12 @@ public class PreprocessingFilter implements ProcessStep {
         stringToWordVector.setLowerCaseTokens(true);
         stringToWordVector.setMinTermFreq(1);
         stringToWordVector.setOutputWordCounts(true);
-        //stringToWordVector.setPeriodicPruning(-1.0);
+        stringToWordVector.setPeriodicPruning(-1.0);
         stringToWordVector.setStopwordsHandler(new Rainbow());
         stringToWordVector.setWordsToKeep(4000);
-        wordTokenizer.setDelimiters(" /\r\n\t.,;:\'\"()?!&#*+=_-<>`˜~|");
-        stringToWordVector.setTokenizer(wordTokenizer);
-        stringToWordVector.setStemmer(lovinsStemmer);
+        nGramTokenizer.setNGramMinSize(1);
+        nGramTokenizer.setNGramMaxSize(5);
+        stringToWordVector.setTokenizer(nGramTokenizer);
         System.out.println("init preprocessing: " + stringToWordVector.toString());
     }
 

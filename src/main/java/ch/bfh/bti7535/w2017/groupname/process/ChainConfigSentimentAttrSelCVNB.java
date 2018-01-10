@@ -2,10 +2,7 @@ package ch.bfh.bti7535.w2017.groupname.process;
 
 
 import ch.bfh.bti7535.w2017.groupname.classify.NBClassifier;
-import ch.bfh.bti7535.w2017.groupname.filter.AttributeSelectionFilter;
-import ch.bfh.bti7535.w2017.groupname.filter.CrossValidationFilter;
-import ch.bfh.bti7535.w2017.groupname.filter.PreprocessingFilter;
-import ch.bfh.bti7535.w2017.groupname.filter.SentimentLexiconWeightedFilter;
+import ch.bfh.bti7535.w2017.groupname.filter.*;
 import ch.bfh.bti7535.w2017.groupname.io.ArffResourceInputProvider;
 
 import java.util.ArrayList;
@@ -24,7 +21,7 @@ public class ChainConfigSentimentAttrSelCVNB implements ProcessChainConfiguratio
     @Override
     public void init() {
         addStep((ProcessStep) new ArffResourceInputProvider().setSource("/movie_reviews_raw.arff"));
-        addStep(new PreprocessingFilter());
+        addStep(new PreprocessingSimpleFilter());
         addStep(new SentimentLexiconWeightedFilter());
         addStep(new AttributeSelectionFilter());
         addStep(new CrossValidationFilter());

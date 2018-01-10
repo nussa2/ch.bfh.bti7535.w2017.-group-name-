@@ -2,7 +2,8 @@ package ch.bfh.bti7535.w2017.groupname.filter;
 
 import ch.bfh.bti7535.w2017.groupname.process.ProcessStep;
 import weka.attributeSelection.BestFirst;
-import weka.attributeSelection.CfsSubsetEval;
+import weka.attributeSelection.GainRatioAttributeEval;
+import weka.attributeSelection.Ranker;
 import weka.core.Instances;
 import weka.core.SelectedTag;
 import weka.filters.Filter;
@@ -11,11 +12,11 @@ import weka.filters.supervised.attribute.AttributeSelection;
 /**
  * Filter zur Auswahl der Klassen-Korrelation zuträglichsten Wörter
  */
-public class AttributeSelectionFilter implements ProcessStep {
+public class AttributeSelectionRankFilter implements ProcessStep {
 
     AttributeSelection attributeSelection = new AttributeSelection();
-    CfsSubsetEval cfsSubsetEval = new CfsSubsetEval();
-    BestFirst bestFirstSearch = new BestFirst();
+    GainRatioAttributeEval gainRatioAttributeEval = new GainRatioAttributeEval();
+    Ranker ranker = new Ranker();
 
     Instances dataset, resultset;
 
@@ -25,22 +26,13 @@ public class AttributeSelectionFilter implements ProcessStep {
     @Override
     public void init() {
         // Konfiguration des gainRatioAttributeEval
-        cfsSubsetEval.setPoolSize(8);
-        cfsSubsetEval.setNumThreads(8);
-        cfsSubsetEval.setDebug(true);
 
         // Konfiguration des ranker
-        bestFirstSearch.setDirection(new SelectedTag("Forward", BestFirst.TAGS_SELECTION));
-        bestFirstSearch.setLookupCacheSize(4);
-        try {
-            bestFirstSearch.setSearchTermination(5);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        ranker.setNumToSelect(1000);
 
         // Konfiguration der AttributeSelection
-        attributeSelection.setEvaluator(cfsSubsetEval);
-        attributeSelection.setSearch(bestFirstSearch);
+        attributeSelection.setEvaluator(gainRatioAttributeEval);
+        attributeSelection.setSearch(ranker);
         System.out.println("init attribute selection: " + attributeSelection.toString());
     }
 
