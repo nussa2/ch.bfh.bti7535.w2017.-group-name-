@@ -15,7 +15,7 @@ Direct links:
 
 # Run
 
-Execute App and have fun! Build with maven or your prefered IDE.
+Build with maven or your prefered IDE. Execute App and have fun! 
 
 <img src="doc/animation.gif">
 
