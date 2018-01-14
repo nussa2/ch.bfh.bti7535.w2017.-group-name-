@@ -15,8 +15,7 @@ Direct links:
 
 # Run
 
-How do you run the software? Java (JRE or JDK) is at least to be installed on your local computer. For running the application you can execute either the `run.bat` for Windows or the equivalent `run.sh` for Linux or Mac.
-
+Execute App and have fun! Build with maven or your prefered IDE.
 
 <img src="doc/animation.gif">
 
