@@ -8,6 +8,11 @@ This piece of software was made during the data science course.
 
 A javadoc and the final presentation for the course can be found in the `doc` folder.
 
+Direct links:
+
+* https://nussa2.github.io/ch.bfh.bti7535.w2017.-group-name-/doc/java-docs
+* https://nussa2.github.io/ch.bfh.bti7535.w2017.-group-name-/doc/Presentation.pdf 
+
 # Run
 
 How do you run the software? Java (JRE or JDK) is at least to be installed on your local computer. For running the application you can execute either the `run.bat` for Windows or the equivalent `run.sh` for Linux or Mac.
